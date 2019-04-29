@@ -17,6 +17,7 @@ private:
 	int rndMode = 0;
 
 	Camera* cam = nullptr;
+	Camera* cam2 = nullptr;
 	ControlCamera* controlCamera = nullptr;
 	void initScene();
 

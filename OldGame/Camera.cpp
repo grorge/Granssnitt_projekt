@@ -250,6 +250,67 @@ void Camera::init()
 	this->objPos.SETheight(200.0f);
 }
 
+void Camera::init(DirectX::XMVECTOR start, DirectX::XMVECTOR target)
+{
+	DirectX::XMVECTOR cameraStartPos;
+	DirectX::XMVECTOR cameraStartFacingDir;
+
+	// Usefull math to set the camera depending on size of map
+	//cameraStartPos = DirectX::XMVECTOR{ static_cast<float>(arenaWidth * 0.5f), static_cast<float>(sqrt((arenaWidth * arenaWidth + arenaDepth * arenaDepth) / 4)), static_cast<float>((arenaDepth * 0.5f) * 0.30f) };
+	//cameraStartPos = DirectX::XMVECTOR{ arenaWidth * 0.5f, 1000.0f, arenaDepth * 0.5f };
+
+	cameraStartPos = start;
+	DirectX::XMVECTOR cameraLookAtPos = target;
+	cameraStartFacingDir = DirectX::XMVectorSubtract(cameraLookAtPos, cameraStartPos);
+	cameraStartFacingDir = DirectX::XMVector3Normalize(cameraStartFacingDir);
+
+	//cameraStartFacingDir = DirectX::XMVECTOR{ arenaWidth * 0.5f, 0.0f, arenaDepth * 0.5f };
+	//cameraStartFacingDir = DirectX::XMVECTOR{ 0.0f, -1.0f, 0.0f };
+
+	this->updateRequired = false;
+
+	// Storing cameraPos
+	DirectX::XMStoreFloat3(&this->cameraPos, cameraStartPos);
+
+	// Storing cameraFacingDir
+	DirectX::XMStoreFloat3(&this->cameraFacingDir, cameraStartFacingDir);
+	//this->cameraUpDir = DirectX::XMVector3Cross(DirectX::XMVECTOR{ 1.0f, 0.0f, 0.0f }, cameraStartFacingDir);
+	DirectX::XMVECTOR cameraUpDir = DirectX::XMVector3Cross(cameraStartFacingDir, DirectX::XMVECTOR{ 1.0f, 0.0f, 0.0f });
+	cameraUpDir = DirectX::XMVector3Normalize(cameraUpDir);
+	DirectX::XMStoreFloat3(&this->cameraUpDir, cameraUpDir);
+
+	this->angle = 0.05f * DirectX::XM_PI;
+	this->nearPlane = 10.5;
+	this->farPlane = 50000.0; //200
+
+	DirectX::XMMATRIX view = DirectX::XMMatrixLookToLH(
+		cameraStartPos,
+		cameraStartFacingDir,
+		cameraUpDir
+	);
+
+	DirectX::XMStoreFloat4x4(&this->view, view);
+
+	// Initiate the projection matrix
+	DirectX::XMMATRIX proj = DirectX::XMMatrixPerspectiveFovLH(
+		(this->angle),
+		static_cast<float>(Locator::getD3D()->GETwWidth() / Locator::getD3D()->GETwHeight()),
+		this->nearPlane,
+		this->farPlane
+	);
+	/*DirectX::XMMATRIX proj = DirectX::XMMatrixOrthographicLH(
+		static_cast<float>(Locator::getD3D()->GETwWidth()) * 10.0f,
+		static_cast<float>(Locator::getD3D()->GETwHeight() * 10.0f),
+		this->nearPlane,
+		this->farPlane
+	);*/
+
+	DirectX::XMStoreFloat4x4(&this->projection, proj);
+
+
+	this->objPos.SETheight(200.0f);
+}
+
 
 void Camera::updateCamera() {
 	

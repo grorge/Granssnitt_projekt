@@ -41,6 +41,7 @@ public:
 	//Rotatoion
 	void SETUp(XMFLOAT3 input) { this->up = input; };
 	void SETDir(XMFLOAT3 input) { this->dir = input; };
+	void SETCam(Camera* cam) { this->cam = cam; };
 	void rotateX(float rot);
 	void rotateY(float rot);
 	void rotateZ(float rot);

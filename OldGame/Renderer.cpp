@@ -146,6 +146,7 @@ void Renderer::initBlend()
 
 	blendDesc.AlphaToCoverageEnable = false;
 	blendDesc.RenderTarget[0] = rtbd;
+	blendDesc.RenderTarget[1] = rtbd;
 
 	hr = Locator::getD3D()->GETgDevice()->CreateBlendState(&blendDesc, &Locator::getD3D()->GETTransp());
 
@@ -223,6 +224,7 @@ void Renderer::createViewportAndRasterizer()
 	this->viewport.MinDepth = 0.0f;
 	this->viewport.MaxDepth = 1.0f;
 
+
 	// RasterizerState
 	D3D11_RASTERIZER_DESC rasterStateDesc;
 	memset(&rasterStateDesc, 0, sizeof(D3D11_RASTERIZER_DESC));
@@ -241,7 +243,7 @@ void Renderer::createBackBufferRTV()
 	DXGI_MODE_DESC bufferDesc;
 	memset(&bufferDesc, 0, sizeof(DXGI_MODE_DESC));
 
-	bufferDesc.Width = (UINT)Locator::getD3D()->GETwWidth();
+	bufferDesc.Width = (UINT)Locator::getD3D()->GETwWidth()/2;
 	bufferDesc.Height = (UINT)Locator::getD3D()->GETwHeight();
 	bufferDesc.RefreshRate.Numerator = 60;
 	bufferDesc.RefreshRate.Denominator = 1;
@@ -258,7 +260,8 @@ void Renderer::createBackBufferRTV()
 	}
 
 	// Create the Render Target
-	hr = Locator::getD3D()->GETgDevice()->CreateRenderTargetView(BackBuffer, nullptr, &this->gFinalRTV);
+	hr = Locator::getD3D()->GETgDevice()->CreateRenderTargetView(BackBuffer, nullptr, &this->gRTVArray[0]);
+	hr = Locator::getD3D()->GETgDevice()->CreateRenderTargetView(BackBuffer, nullptr, &this->gRTVArray[1]);
 	if (FAILED(hr)) {
 		MessageBox(0, "Create Render Target View - Failed", "Error", MB_OK);
 		_exit(0);
@@ -289,13 +292,16 @@ void Renderer::createDepthStencilView(/*size_t width, size_t height, ID3D11Depth
 	depthStencilDesc.MiscFlags = 0;
 
 	// Creates the Depth/Stencil View
-	hr = Locator::getD3D()->GETgDevice()->CreateTexture2D(&depthStencilDesc, nullptr, &this->gDSB);
+	hr = Locator::getD3D()->GETgDevice()->CreateTexture2D(&depthStencilDesc, nullptr, &this->gDSBArray[0]);
+	hr = Locator::getD3D()->GETgDevice()->CreateTexture2D(&depthStencilDesc, nullptr, &this->gDSBArray[1]);
 	if (FAILED(hr)) {
 		MessageBox(0, "Create Depth Texture - Failed", "Error", MB_OK);
 		_exit(0);
 	}
 
-	hr = Locator::getD3D()->GETgDevice()->CreateDepthStencilView(this->gDSB, nullptr, &this->gDSV);
+	hr = Locator::getD3D()->GETgDevice()->CreateDepthStencilView(this->gDSBArray[0], nullptr, &this->gDSVArray[0]);
+	hr = Locator::getD3D()->GETgDevice()->CreateDepthStencilView(this->gDSBArray[1], nullptr, &this->gDSVArray[1]);
+	//hr = Locator::getD3D()->GETgDevice()->CreateDepthStencilView(this->gDSB, nullptr, &this->gDSV);
 	if (FAILED(hr)) {
 		MessageBox(0, "Create Depth Stencil - Failed", "Error", MB_OK);
 		_exit(0);
@@ -312,7 +318,7 @@ void Renderer::init()
 
 	this->createBackBufferRTV();
 	this->createDepthStencilView();
-	Locator::getD3D()->GETgDevCon()->OMSetRenderTargets(1, &this->gFinalRTV, this->gDSV);
+	Locator::getD3D()->GETgDevCon()->OMSetRenderTargets(1, this->gRTVArray, this->gDSVArray[0]);
 		
 	this->initShaders();
 	this->geoColorShaders.SetShaders(Locator::getD3D()->GETgDevCon());
@@ -360,8 +366,9 @@ void Renderer::render(std::vector<Object*> objects)
 void Renderer::startRender()
 {
 	// Clear everything and will be the background that everything will be renderd on
-	Locator::getD3D()->GETgDevCon()->ClearRenderTargetView(this->gFinalRTV, this->clearColor);
-	Locator::getD3D()->GETgDevCon()->ClearDepthStencilView(this->gDSV, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
+	//Locator::getD3D()->GETgDevCon()->ClearRenderTargetView(this->gRTVArray[0], this->clearColor);
+	Locator::getD3D()->GETgDevCon()->ClearRenderTargetView(this->gRTVArray[1], this->clearColor);
+	Locator::getD3D()->GETgDevCon()->ClearDepthStencilView(this->gDSVArray[0], D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
 
 	//Set the default blend state (no blending) for opaque objects
 	Locator::getD3D()->GETgDevCon()->OMSetBlendState(0, 0, 0xffffffff);
@@ -436,9 +443,15 @@ void Renderer::setShaderType(SHADERTYPE type)
 
 void Renderer::cleanUp()
 {	
-	this->gFinalRTV->Release();
-	this->gDSV->Release();
-	this->gDSB->Release();
+	//this->gFinalRTV->Release();
+	this->gRTVArray[0]->Release();
+	this->gRTVArray[1]->Release();
+	this->gDSVArray[0]->Release();
+	this->gDSVArray[1]->Release();
+	this->gDSBArray[0]->Release();
+	this->gDSBArray[1]->Release();
+	//this->gDSV->Release();
+	//this->gDSB->Release();
 	this->gSampler->Release();
 	this->geoColorShaders.Release();
 

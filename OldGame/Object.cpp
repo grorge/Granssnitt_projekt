@@ -19,7 +19,11 @@ Object::~Object()
 	//{
 	//	this->rndData->~RenderData();
 	//}
+	if (this->rndData != nullptr)
+	{
 	delete this->rndData;
+
+	}
 	
 }
 

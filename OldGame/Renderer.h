@@ -23,9 +23,11 @@ enum class SHADERTYPE { COLOR, TEXTURE };
 class Renderer
 {
 private:
-	ID3D11RenderTargetView* gFinalRTV = nullptr;
-	ID3D11Texture2D* gDSB = nullptr;
-	ID3D11DepthStencilView* gDSV = nullptr;
+	ID3D11RenderTargetView* gRTVArray[2];
+	//ID3D11Texture2D* gDSB = nullptr;
+	ID3D11Texture2D* gDSBArray[2];
+	ID3D11DepthStencilView* gDSVArray[2];
+	//ID3D11DepthStencilView* gDSV = nullptr;
 	ID3D11SamplerState* gSampler = nullptr;
 	ID3D11Buffer* gQuadVertexBuffer = nullptr;
 	D3D11_VIEWPORT viewport;

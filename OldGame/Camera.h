@@ -58,6 +58,7 @@ private:
 public:
 	Camera();
 	void init();
+	void init(DirectX::XMVECTOR start, DirectX::XMVECTOR target);
 
 	void updateCamera();
 

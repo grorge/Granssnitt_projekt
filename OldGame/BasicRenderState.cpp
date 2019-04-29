@@ -23,7 +23,7 @@ void BasicRenderState::initScene()
 	DynObject(this->cam, L"LP_tree", L"planks");
 	DynObject(this->cam, L"LP_male", L"planks");
 	DynObject(this->cam, L"bottle", L"planks");
-	DynObject(this->cam, L"HP_Glock", L"planks");
+	//DynObject(this->cam, L"HP_Glock", L"planks");
 
 	//Add modles
 	// (Old way to show more options)
@@ -41,28 +41,28 @@ void BasicRenderState::initScene()
 			XMFLOAT3(-100.0f, -100.0f, 1000.0f))
 		, OBJECTLIST::MOVING);
 
-	this->objHandler->addObject(
-		this->createDynObject(
-			L"LP_male", L"bricks",
-			10.0f, 
-			XMFLOAT3(-100.0f, -100.0f, 1000.0f))
-		, OBJECTLIST::MOVING);
+	//this->objHandler->addObject(
+	//	this->createDynObject(
+	//		L"LP_male", L"bricks",
+	//		10.0f, 
+	//		XMFLOAT3(-100.0f, -100.0f, 1000.0f))
+	//	, OBJECTLIST::MOVING);
 
-	//Test for preformance
-	{
-		float tempXaxis = -3000.0f;
-		for (int i = 0; i < 200; i++)
-		{
-			this->objHandler->addObject(
-				this->createDynObject(
-					L"LP_male", L"gravel", 
-					50.0f, 
-					XMFLOAT3(tempXaxis, -100.0f, 2000.0f))
-				, OBJECTLIST::MOVING);
+	////Test for preformance
+	//{
+	//	float tempXaxis = -3000.0f;
+	//	for (int i = 0; i < 200; i++)
+	//	{
+	//		this->objHandler->addObject(
+	//			this->createDynObject(
+	//				L"LP_male", L"gravel", 
+	//				50.0f, 
+	//				XMFLOAT3(tempXaxis, -100.0f, 2000.0f))
+	//			, OBJECTLIST::MOVING);
 
-			tempXaxis += 200.0f;
-		}
-	}
+	//		tempXaxis += 200.0f;
+	//	}
+	//}
 
 	//newObject = new DynObject(this->cam, L"bottle", L"gravel");
 	//newObject->SETSizeFloat3(XMFLOAT3(100.0f, 150.0f, 50.0f));
@@ -89,12 +89,20 @@ void BasicRenderState::initScene()
 			XMFLOAT3(-200.0f, 250.0f, 200.0f))
 		, OBJECTLIST::TRANS);
 
-	this->objHandler->addObject(
+	/*this->objHandler->addObject(
 		this->createDynObject(
 			L"HP_Glock", L"gravel",
 			12.0f,
 			XMFLOAT3(200.0f, 100.0f, 250.0f))
-		, OBJECTLIST::MOVING);
+		, OBJECTLIST::MOVING);*/
+
+
+	//for (auto obj : this->objHandler->getObjList(OBJECTLIST::STATIC))
+	//	obj->SETCam(cam2);
+	//for (auto obj : this->objHandler->getObjList(OBJECTLIST::MOVING))
+	//	obj->SETCam(cam2);
+	//for (auto obj : this->objHandler->getObjList(OBJECTLIST::TRANS))
+	//	obj->SETCam(cam2);
 }
 
 Object * BasicRenderState::createDynObject(std::wstring meshFile, std::wstring texFile, float size, XMFLOAT3 pos)
@@ -118,7 +126,9 @@ void BasicRenderState::init()
 	this->renderer.switchRendermode(this->rndMode);
 
 	this->cam = new Camera();
+	this->cam2 = new Camera();
 	this->cam->init();
+	this->cam2->init(DirectX::XMVECTOR{ 0.0001f, 45000.0f, 0.0001f }, DirectX::XMVECTOR{ 0.0001f, 100.0f, 0.0001f });
 	this->controlCamera = new ControlCamera(this->cam);
 
 	this->objHandler = new ObjectHandler;
@@ -138,8 +148,9 @@ void BasicRenderState::cleanUp()
 		
 	this->renderer.cleanUp();
 	delete this->cam;
+	delete this->cam2;
 	delete this->controlCamera;
-	delete this->objHandler;
+	//delete this->objHandler;
 }
 
 void BasicRenderState::pause()
@@ -193,6 +204,7 @@ void BasicRenderState::update(GameManager * gm)
 	Locator::getD2D()->SETTextFormat(std::to_wstring(Locator::getTime()->GETCoeff()));
 
 	this->cam->updateCamera();
+	this->cam2->updateCamera();
 
 	for (auto obj : this->objHandler->getObjList(OBJECTLIST::MOVING))
 	{

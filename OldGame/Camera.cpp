@@ -231,9 +231,15 @@ void Camera::init()
 	DirectX::XMStoreFloat4x4(&this->view, view);
 
 	// Initiate the projection matrix
-	DirectX::XMMATRIX proj = DirectX::XMMatrixPerspectiveFovLH(
+	/*DirectX::XMMATRIX proj = DirectX::XMMatrixPerspectiveFovLH(
 		(this->angle),
 		static_cast<float>(Locator::getD3D()->GETwWidth() / Locator::getD3D()->GETwHeight()),
+		this->nearPlane,
+		this->farPlane
+	);*/
+	DirectX::XMMATRIX proj = DirectX::XMMatrixOrthographicLH(
+		static_cast<float>(Locator::getD3D()->GETwWidth()) * 10.0f,
+		static_cast<float>(Locator::getD3D()->GETwHeight() * 10.0f),
 		this->nearPlane,
 		this->farPlane
 	);

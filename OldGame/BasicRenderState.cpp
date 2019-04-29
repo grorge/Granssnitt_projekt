@@ -139,6 +139,7 @@ void BasicRenderState::cleanUp()
 	this->renderer.cleanUp();
 	delete this->cam;
 	delete this->controlCamera;
+	delete this->objHandler;
 }
 
 void BasicRenderState::pause()

@@ -1,0 +1,178 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="D3D.cpp">
+      <Filter>Setup</Filter>
+    </ClCompile>
+    <ClCompile Include="D2D.cpp">
+      <Filter>Setup</Filter>
+    </ClCompile>
+    <ClCompile Include="Shader.cpp">
+      <Filter>Setup</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>Setup</Filter>
+    </ClCompile>
+    <ClCompile Include="Renderer.cpp">
+      <Filter>BackendLoop\Render</Filter>
+    </ClCompile>
+    <ClCompile Include="Locator.cpp">
+      <Filter>Setup\Locator</Filter>
+    </ClCompile>
+    <ClCompile Include="StateManager.cpp">
+      <Filter>Structure\States</Filter>
+    </ClCompile>
+    <ClCompile Include="Camera.cpp">
+      <Filter>BackendLoop\Logic</Filter>
+    </ClCompile>
+    <ClCompile Include="GameManager.cpp">
+      <Filter>BackendLoop\Logic</Filter>
+    </ClCompile>
+    <ClCompile Include="MouseInput.cpp">
+      <Filter>BackendLoop\Logic</Filter>
+    </ClCompile>
+    <ClCompile Include="BasicRenderState.cpp">
+      <Filter>Structure\States</Filter>
+    </ClCompile>
+    <ClCompile Include="Object.cpp">
+      <Filter>GameCont</Filter>
+    </ClCompile>
+    <ClCompile Include="StaticObject.cpp">
+      <Filter>GameCont</Filter>
+    </ClCompile>
+    <ClCompile Include="ControlCamera.cpp">
+      <Filter>BackendLoop\Logic</Filter>
+    </ClCompile>
+    <ClCompile Include="ModelLoader.cpp">
+      <Filter>Setup</Filter>
+    </ClCompile>
+    <ClCompile Include="DynObject.cpp">
+      <Filter>GameCont</Filter>
+    </ClCompile>
+    <ClCompile Include="Time.cpp">
+      <Filter>Setup</Filter>
+    </ClCompile>
+    <ClCompile Include="ObjPosition.cpp">
+      <Filter>GameCont</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="D3D.h">
+      <Filter>Setup</Filter>
+    </ClInclude>
+    <ClInclude Include="D2D.h">
+      <Filter>Setup</Filter>
+    </ClInclude>
+    <ClInclude Include="Shader.h">
+      <Filter>Setup</Filter>
+    </ClInclude>
+    <ClInclude Include="Renderer.h">
+      <Filter>BackendLoop\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="ID2D.h">
+      <Filter>Setup\Locator</Filter>
+    </ClInclude>
+    <ClInclude Include="ID3D.h">
+      <Filter>Setup\Locator</Filter>
+    </ClInclude>
+    <ClInclude Include="Locator.h">
+      <Filter>Setup\Locator</Filter>
+    </ClInclude>
+    <ClInclude Include="State.h">
+      <Filter>Structure\States</Filter>
+    </ClInclude>
+    <ClInclude Include="StateManager.h">
+      <Filter>Structure\States</Filter>
+    </ClInclude>
+    <ClInclude Include="MouseInput.h">
+      <Filter>BackendLoop\Logic</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera.h">
+      <Filter>BackendLoop\Logic</Filter>
+    </ClInclude>
+    <ClInclude Include="GameManager.h">
+      <Filter>BackendLoop\Logic</Filter>
+    </ClInclude>
+    <ClInclude Include="BasicRenderState.h">
+      <Filter>Structure\States</Filter>
+    </ClInclude>
+    <ClInclude Include="Object.h">
+      <Filter>GameCont</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderData.h">
+      <Filter>BackendLoop\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="StaticObject.h">
+      <Filter>GameCont</Filter>
+    </ClInclude>
+    <ClInclude Include="ControlCamera.h">
+      <Filter>BackendLoop\Logic</Filter>
+    </ClInclude>
+    <ClInclude Include="ModelLoader.h">
+      <Filter>Setup</Filter>
+    </ClInclude>
+    <ClInclude Include="DynObject.h">
+      <Filter>GameCont</Filter>
+    </ClInclude>
+    <ClInclude Include="CleanupTools.h">
+      <Filter>Structure</Filter>
+    </ClInclude>
+    <ClInclude Include="ITime.h">
+      <Filter>Setup\Locator</Filter>
+    </ClInclude>
+    <ClInclude Include="Time.h">
+      <Filter>Setup</Filter>
+    </ClInclude>
+    <ClInclude Include="IModelLoader.h">
+      <Filter>Setup\Locator</Filter>
+    </ClInclude>
+    <ClInclude Include="ObjectHandler.h">
+      <Filter>GameCont</Filter>
+    </ClInclude>
+    <ClInclude Include="ObjPosition.h">
+      <Filter>GameCont</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Setup">
+      <UniqueIdentifier>{975d4149-b3c5-4dae-bdef-dd66633a57f8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameCont">
+      <UniqueIdentifier>{7ebff5ad-dc6f-4661-abcc-f089dfdb3ad5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Structure">
+      <UniqueIdentifier>{4534d65d-f739-48df-839c-30ccf3fe1409}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="BackendLoop">
+      <UniqueIdentifier>{c256b835-b0b6-4f4c-86d8-e5d829aeb3fb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="BackendLoop\Render">
+      <UniqueIdentifier>{b92ac5e3-26a3-4005-8281-0abadef344f0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Structure\States">
+      <UniqueIdentifier>{afbc6c5e-9973-418c-939c-ad1a13a04e4d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shaders">
+      <UniqueIdentifier>{fe852230-8ecf-47ea-a8e9-76957c145284}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="BackendLoop\Logic">
+      <UniqueIdentifier>{6120d205-8791-484c-8129-1d060af3688e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Setup\Locator">
+      <UniqueIdentifier>{1c31a6e2-4c8b-4e5e-8355-a4b7a55a77b1}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config">
+      <Filter>BackendLoop</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="geoPassPixelColor.hlsl">
+      <Filter>Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="geoPassVertColor.hlsl">
+      <Filter>Shaders</Filter>
+    </FxCompile>
+  </ItemGroup>
+</Project>

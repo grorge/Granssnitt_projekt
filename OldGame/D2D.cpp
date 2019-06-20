@@ -159,12 +159,13 @@ void D2D::openMenu(DirectX::XMFLOAT2 centerPos)
 {
 	this->g_Menu.v_Box.clear();
 
+	this->g_Menu.nrMenuBoxes = 3;
 
-	for (size_t i = 0; i < 3; i++)
+	for (size_t i = 0; i < this->g_Menu.nrMenuBoxes; i++)
 	{
 		MenuBox tempMenuBox;
 		tempMenuBox.Background.copyStyle(&this->g_Menu.boxStyle);
-		tempMenuBox.pos = DirectX::XMFLOAT2(centerPos.x, centerPos.y + (i * this->g_Menu.boxStyle.size.y));
+		tempMenuBox.Background.pos = DirectX::XMFLOAT2(centerPos.x, centerPos.y + (i  * this->g_Menu.boxStyle.size.y));
 		tempMenuBox.Background.setRect();
 
 		m_pDirect2dFactory->CreateRectangleGeometry(
@@ -173,15 +174,18 @@ void D2D::openMenu(DirectX::XMFLOAT2 centerPos)
 		);
 
 		tempMenuBox.ToRender = true;
+		tempMenuBox.Text = L"TEST";
 		this->g_Menu.v_Box.push_back(tempMenuBox);
 	}
+
+
 
 
 }
 
 void D2D::pauseMenu()
 {
-	XMFLOAT2 middlePoint(Locator::getD3D()->GETwWidth() / 2.0f, Locator::getD3D()->GETwHeight() / 2.0f);
+	XMFLOAT2 middlePoint((Locator::getD3D()->GETwWidth() / 2.0f) - this->g_Menu.boxStyle.size.x/2, Locator::getD3D()->GETwHeight() / 3.0f);
 
 	openMenu(middlePoint);
 
@@ -309,6 +313,19 @@ void D2D::drawMenu()
 		{
 			this->m_pRenderTarget->DrawGeometry(this->g_Menu.v_Box.at(i).Background.p_rectGeom, this->g_Menu.v_Box.at(i).Background.p_colorBrush);
 			this->m_pRenderTarget->FillGeometry(this->g_Menu.v_Box.at(i).Background.p_rectGeom, this->g_Menu.v_Box.at(i).Background.p_colorBrush);
+		
+			//Draw the Text
+			this->m_pRenderTarget->DrawText(
+				this->g_Menu.v_Box.at(i).Text.c_str(),
+				wcslen(this->g_Menu.v_Box.at(i).Text.c_str()),
+				this->m_pTextFormat,
+				this->g_Menu.v_Box.at(i).Background.getRect(),
+				this->pTextColor
+			);
 		}
+
+
 	}
+	
+
 };

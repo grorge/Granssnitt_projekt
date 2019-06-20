@@ -31,7 +31,7 @@ struct BoxGeoData {
 		p_rectGeom = source->p_rectGeom;
 		p_colorBrush = source->p_colorBrush;
 
-		setRect();
+		
 	};
 };
 
@@ -51,6 +51,7 @@ struct MenuInfo
 
 	BoxGeoData boxStyle;
 
+	int nrMenuBoxes = 1;
 	std::vector<MenuBox> v_Box;
 };
 

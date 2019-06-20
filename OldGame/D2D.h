@@ -22,6 +22,27 @@ struct BoxGeoData {
 	D2D1_RECT_F getRect() {
 		return this->rectf;
 	}
+
+	void copyStyle(BoxGeoData* source)
+	{
+		pos = source->pos;
+		size = source->size;
+		padding = source->padding;
+		p_rectGeom = source->p_rectGeom;
+		p_colorBrush = source->p_colorBrush;
+
+		setRect();
+	};
+};
+
+struct MenuBox
+{
+	DirectX::XMFLOAT2 pos = DirectX::XMFLOAT2(0.0f, 0.0f);
+
+
+	BoxGeoData Background;
+	std::wstring Text;
+	bool ToRender;
 };
 
 struct MenuInfo
@@ -30,8 +51,7 @@ struct MenuInfo
 
 	BoxGeoData boxStyle;
 
-	std::vector<BoxGeoData> v_Box;
-	std::vector<bool> v_renderBox;
+	std::vector<MenuBox> v_Box;
 };
 
 
@@ -106,6 +126,8 @@ private:
 	clock_t frametime = clock_t();
 	clock_t lastDisplay = clock_t();
 
+
+	void drawMenu();
 };
 
 

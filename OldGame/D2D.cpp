@@ -16,7 +16,7 @@ HRESULT D2D::Initialize(IDXGISurface1 *sSurface10)
 		this->CreateDeviceResources(sSurface10);
 	}
 
-	this->openMenu(DirectX::XMFLOAT2(350.0f, 100.0f));
+	//this->openMenu(DirectX::XMFLOAT2(350.0f, 100.0f));
 
 	return E_NOTIMPL;
 }
@@ -158,21 +158,22 @@ void D2D::DiscardDeviceResources()
 void D2D::openMenu(DirectX::XMFLOAT2 centerPos)
 {
 	this->g_Menu.v_Box.clear();
-	this->g_Menu.v_renderBox.clear();
 
 
 	for (size_t i = 0; i < 3; i++)
 	{
-		this->g_Menu.boxStyle.pos = DirectX::XMFLOAT2(centerPos.x, centerPos.y + (i * this->g_Menu.boxStyle.size.y));
-		this->g_Menu.boxStyle.setRect();
+		MenuBox tempMenuBox;
+		tempMenuBox.Background.copyStyle(&this->g_Menu.boxStyle);
+		tempMenuBox.pos = DirectX::XMFLOAT2(centerPos.x, centerPos.y + (i * this->g_Menu.boxStyle.size.y));
+		tempMenuBox.Background.setRect();
 
 		m_pDirect2dFactory->CreateRectangleGeometry(
-			this->g_Menu.boxStyle.getRect(),
-			&this->g_Menu.boxStyle.p_rectGeom
+			tempMenuBox.Background.getRect(),
+			&tempMenuBox.Background.p_rectGeom
 		);
 
-		this->g_Menu.v_Box.push_back(this->g_Menu.boxStyle);
-		this->g_Menu.v_renderBox.push_back(true);
+		tempMenuBox.ToRender = true;
+		this->g_Menu.v_Box.push_back(tempMenuBox);
 	}
 
 
@@ -242,15 +243,8 @@ HRESULT D2D::OnRender()
 		this->m_pRenderTarget->FillGeometry(this->g_MsgBox.p_rectGeom, this->g_MsgBox.p_colorBrush);
 
 
-
-		for (size_t i = 0; i < this->g_Menu.v_Box.size(); i++)
-		{
-			if (this->g_Menu.v_renderBox.at(i))
-			{
-				this->m_pRenderTarget->DrawGeometry(this->g_Menu.v_Box.at(i).p_rectGeom, this->g_Menu.v_Box.at(i).p_colorBrush);
-				this->m_pRenderTarget->FillGeometry(this->g_Menu.v_Box.at(i).p_rectGeom, this->g_Menu.v_Box.at(i).p_colorBrush);
-			}
-		}
+		drawMenu();
+		
 
 		//Draw the Text
 		this->m_pRenderTarget->DrawText(
@@ -305,3 +299,16 @@ void D2D::setBackbuffer(ID3D11Texture2D * pBB)
 {
 	this->r_pBackBuffer = pBB;
 }
+
+
+void D2D::drawMenu()
+{
+	for (size_t i = 0; i < this->g_Menu.v_Box.size(); i++)
+	{
+		if (this->g_Menu.v_Box.at(i).ToRender)
+		{
+			this->m_pRenderTarget->DrawGeometry(this->g_Menu.v_Box.at(i).Background.p_rectGeom, this->g_Menu.v_Box.at(i).Background.p_colorBrush);
+			this->m_pRenderTarget->FillGeometry(this->g_Menu.v_Box.at(i).Background.p_rectGeom, this->g_Menu.v_Box.at(i).Background.p_colorBrush);
+		}
+	}
+};

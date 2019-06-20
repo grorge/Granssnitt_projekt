@@ -121,6 +121,10 @@ BasicRenderState* BasicRenderState::getInstance() {
 
 void BasicRenderState::init()
 {
+
+
+
+
 	this->renderer.init();
 	this->rndMode = int(RENDERMODE::LIGHTDIST);
 	this->renderer.switchRendermode(this->rndMode);
@@ -128,7 +132,7 @@ void BasicRenderState::init()
 	this->cam = new Camera();
 	this->cam2 = new Camera();
 	this->cam->init();
-	this->cam2->init(DirectX::XMVECTOR{ 0.0001f, 45000.0f, 0.0001f }, DirectX::XMVECTOR{ 0.0001f, 100.0f, 0.0001f });
+	this->cam2->init(DirectX::XMVECTOR{ 1000.0001f, 1000.0f, -1000.0001f }, DirectX::XMVECTOR{ 0.0001f, 100.0f, 0.0001f });
 	this->controlCamera = new ControlCamera(this->cam);
 
 	this->objHandler = new ObjectHandler;
@@ -179,6 +183,14 @@ void BasicRenderState::handleEvents(GameManager * gm)
 				this->rndMode++;
 				this->rndMode %= int(RENDERMODE::SIZE);
 				this->renderer.switchRendermode(this->rndMode);
+				
+				for (auto obj : this->objHandler->getObjList(OBJECTLIST::STATIC))
+					obj->SETCam(cam2);
+				for (auto obj : this->objHandler->getObjList(OBJECTLIST::MOVING))
+					obj->SETCam(cam2);
+				for (auto obj : this->objHandler->getObjList(OBJECTLIST::TRANS))
+					obj->SETCam(cam2);
+
 			}
 			
 		}
@@ -191,7 +203,7 @@ void BasicRenderState::handleEvents(GameManager * gm)
 			GetCursorPos(&mPoint);
 			// Converts it to the pixels in the window
 			ScreenToClient(Locator::getD3D()->GEThwnd(), &mPoint);
-			Locator::getD2D()->openMenu(XMFLOAT2(mPoint.x, mPoint.y));
+			Locator::getD2D()->openMenu(XMFLOAT2(mPoint.x * (1.0f/0.8f), mPoint.y));
 		}
 
 		TranslateMessage(&msg);

@@ -39,61 +39,61 @@ void Renderer::initBuffers()
 	Locator::getD3D()->setConstantBuffer(this->lightBuffer, SHADER::PIXEL, 1, 1);
 }
 
-void Renderer::bindTextureToRTVAndSRV(ID3D11Texture2D** gTexure, ID3D11RenderTargetView** gRTV, ID3D11ShaderResourceView** gSRV, int width, int height, DXGI_FORMAT format)
-{
-	HRESULT hr;
-
-	// Describe the texture
-	D3D11_TEXTURE2D_DESC texDesc;
-	memset(&texDesc, 0, sizeof(D3D11_TEXTURE2D_DESC));
-	texDesc.Format = format;
-	texDesc.CPUAccessFlags = 0;
-	texDesc.ArraySize = 1;
-	texDesc.BindFlags = D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE;
-	//texDesc.Width = width;
-	//texDesc.Height = height;
-	texDesc.MipLevels = 1;
-	texDesc.MiscFlags = 0;
-	texDesc.SampleDesc.Count = 1;
-	texDesc.SampleDesc.Quality = 0;
-	texDesc.Usage = D3D11_USAGE_DEFAULT;
-
-	// Create one texture per rendertarget
-	hr = Locator::getD3D()->GETgDevice()->CreateTexture2D(&texDesc, nullptr, gTexure);
-	if (FAILED(hr)) {
-		MessageBox(0, "Create texture (RTV and SRV) - Failed", "Error", MB_OK);
-		_exit(0);
-	}
-
-	// Describe the Rendertargetview
-	D3D11_RENDER_TARGET_VIEW_DESC rtvDesc;
-	memset(&rtvDesc, 0, sizeof(D3D11_RENDER_TARGET_VIEW_DESC));
-	rtvDesc.Format = format;
-	rtvDesc.ViewDimension = D3D11_RTV_DIMENSION_TEXTURE2D;
-	rtvDesc.Texture2D.MipSlice = 0;
-
-	// Create one rtv per output from the pixel shader
-	hr = Locator::getD3D()->GETgDevice()->CreateRenderTargetView(*gTexure, &rtvDesc, gRTV);
-	if (FAILED(hr)) {
-		MessageBox(0, "Create RTV (RTV and SRV) - Failed", "Error", MB_OK);
-		_exit(0);
-	}
-
-	// Describe the Shaderresourceview
-	D3D11_SHADER_RESOURCE_VIEW_DESC srvDesc;
-	memset(&srvDesc, 0, sizeof(D3D11_SHADER_RESOURCE_VIEW_DESC));
-	srvDesc.Format = format;
-	srvDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;
-	srvDesc.Texture2D.MostDetailedMip = 0;
-	srvDesc.Texture2D.MipLevels = 1;
-
-	// Create one srv per texture to be loaded into the next pixel shader
-	hr = Locator::getD3D()->GETgDevice()->CreateShaderResourceView(*gTexure, &srvDesc, gSRV);
-	if (FAILED(hr)) {
-		MessageBox(0, "Create SRV (RTV and SRV) - Failed", "Error", MB_OK);
-		_exit(0);
-	}
-}
+//void Renderer::bindTextureToRTVAndSRV(ID3D11Texture2D** gTexure, ID3D11RenderTargetView** gRTV, ID3D11ShaderResourceView** gSRV, int width, int height, DXGI_FORMAT format)
+//{
+//	HRESULT hr;
+//
+//	// Describe the texture
+//	D3D11_TEXTURE2D_DESC texDesc;
+//	memset(&texDesc, 0, sizeof(D3D11_TEXTURE2D_DESC));
+//	texDesc.Format = format;
+//	texDesc.CPUAccessFlags = 0;
+//	texDesc.ArraySize = 1;
+//	texDesc.BindFlags = D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE;
+//	//texDesc.Width = width;
+//	//texDesc.Height = height;
+//	texDesc.MipLevels = 1;
+//	texDesc.MiscFlags = 0;
+//	texDesc.SampleDesc.Count = 1;
+//	texDesc.SampleDesc.Quality = 0;
+//	texDesc.Usage = D3D11_USAGE_DEFAULT;
+//
+//	// Create one texture per rendertarget
+//	hr = Locator::getD3D()->GETgDevice()->CreateTexture2D(&texDesc, nullptr, gTexure);
+//	if (FAILED(hr)) {
+//		MessageBox(0, "Create texture (RTV and SRV) - Failed", "Error", MB_OK);
+//		_exit(0);
+//	}
+//
+//	// Describe the Rendertargetview
+//	D3D11_RENDER_TARGET_VIEW_DESC rtvDesc;
+//	memset(&rtvDesc, 0, sizeof(D3D11_RENDER_TARGET_VIEW_DESC));
+//	rtvDesc.Format = format;
+//	rtvDesc.ViewDimension = D3D11_RTV_DIMENSION_TEXTURE2D;
+//	rtvDesc.Texture2D.MipSlice = 0;
+//
+//	// Create one rtv per output from the pixel shader
+//	hr = Locator::getD3D()->GETgDevice()->CreateRenderTargetView(*gTexure, &rtvDesc, gRTV);
+//	if (FAILED(hr)) {
+//		MessageBox(0, "Create RTV (RTV and SRV) - Failed", "Error", MB_OK);
+//		_exit(0);
+//	}
+//
+//	// Describe the Shaderresourceview
+//	D3D11_SHADER_RESOURCE_VIEW_DESC srvDesc;
+//	memset(&srvDesc, 0, sizeof(D3D11_SHADER_RESOURCE_VIEW_DESC));
+//	srvDesc.Format = format;
+//	srvDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;
+//	srvDesc.Texture2D.MostDetailedMip = 0;
+//	srvDesc.Texture2D.MipLevels = 1;
+//
+//	// Create one srv per texture to be loaded into the next pixel shader
+//	hr = Locator::getD3D()->GETgDevice()->CreateShaderResourceView(*gTexure, &srvDesc, gSRV);
+//	if (FAILED(hr)) {
+//		MessageBox(0, "Create SRV (RTV and SRV) - Failed", "Error", MB_OK);
+//		_exit(0);
+//	}
+//}
 
 void Renderer::initSampler(ID3D11SamplerState** gSampler, D3D11_FILTER filter, D3D11_TEXTURE_ADDRESS_MODE texAdressModeU, D3D11_TEXTURE_ADDRESS_MODE texAdressModeV, D3D11_TEXTURE_ADDRESS_MODE texAdressModeW, D3D11_COMPARISON_FUNC compFunc)
 {
@@ -243,7 +243,7 @@ void Renderer::createBackBufferRTV()
 	DXGI_MODE_DESC bufferDesc;
 	memset(&bufferDesc, 0, sizeof(DXGI_MODE_DESC));
 
-	bufferDesc.Width = (UINT)Locator::getD3D()->GETwWidth()/2;
+	bufferDesc.Width = (UINT)Locator::getD3D()->GETwWidth();
 	bufferDesc.Height = (UINT)Locator::getD3D()->GETwHeight();
 	bufferDesc.RefreshRate.Numerator = 60;
 	bufferDesc.RefreshRate.Denominator = 1;
@@ -311,9 +311,9 @@ void Renderer::createDepthStencilView(/*size_t width, size_t height, ID3D11Depth
 void Renderer::init()
 {
 	// Set the clear color
-	this->clearColor[0] = 0.3f;
-	this->clearColor[1] = 0.0f;
-	this->clearColor[2] = 0.3f;
+	this->clearColor[0] = 0.1f;
+	this->clearColor[1] = 0.1f;
+	this->clearColor[2] = 0.1f;
 	this->clearColor[3] = 255.0f;
 
 	this->createBackBufferRTV();
@@ -367,7 +367,7 @@ void Renderer::startRender()
 {
 	// Clear everything and will be the background that everything will be renderd on
 	//Locator::getD3D()->GETgDevCon()->ClearRenderTargetView(this->gRTVArray[0], this->clearColor);
-	Locator::getD3D()->GETgDevCon()->ClearRenderTargetView(this->gRTVArray[1], this->clearColor);
+	Locator::getD3D()->GETgDevCon()->ClearRenderTargetView(this->gRTVArray[0], this->clearColor);
 	Locator::getD3D()->GETgDevCon()->ClearDepthStencilView(this->gDSVArray[0], D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
 
 	//Set the default blend state (no blending) for opaque objects

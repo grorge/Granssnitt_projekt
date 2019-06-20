@@ -105,6 +105,13 @@ HRESULT D2D::CreateDeviceIndependentResources()
 		this->g_Menu.pos = DirectX::XMFLOAT2(200.0f, 200.0f);
 	}
 
+	if (SUCCEEDED(hr))
+	{
+		//Create ImageBitmap to save one pass of the backbuffer
+
+
+	}
+
 	return hr;
 }
 

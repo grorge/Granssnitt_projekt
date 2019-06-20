@@ -198,8 +198,8 @@ void Camera::init()
 	//cameraStartPos = DirectX::XMVECTOR{ static_cast<float>(arenaWidth * 0.5f), static_cast<float>(sqrt((arenaWidth * arenaWidth + arenaDepth * arenaDepth) / 4)), static_cast<float>((arenaDepth * 0.5f) * 0.30f) };
 	//cameraStartPos = DirectX::XMVECTOR{ arenaWidth * 0.5f, 1000.0f, arenaDepth * 0.5f };
 
-	cameraStartPos = DirectX::XMVECTOR{ 0.0001f, 45000.0f, 0.0001f };
-	DirectX::XMVECTOR cameraLookAtPos = DirectX::XMVECTOR{ 0.0001f, 100.0f, 0.0001f };
+	cameraStartPos = DirectX::XMVECTOR{ 0.0001f, 150.0f, 0.0001f };
+	DirectX::XMVECTOR cameraLookAtPos = DirectX::XMVECTOR{ 0.0001f, 150.0f, 10.0001f };
 	cameraStartFacingDir = DirectX::XMVectorSubtract(cameraLookAtPos, cameraStartPos);
 	cameraStartFacingDir = DirectX::XMVector3Normalize(cameraStartFacingDir);
 
@@ -218,9 +218,9 @@ void Camera::init()
 	cameraUpDir = DirectX::XMVector3Normalize(cameraUpDir);
 	DirectX::XMStoreFloat3(&this->cameraUpDir, cameraUpDir);
 
-	this->angle = 0.05f * DirectX::XM_PI;
+	this->angle = 0.65f * DirectX::XM_PI;
 	this->nearPlane = 10.5;
-	this->farPlane = 50000.0; //200
+	this->farPlane = 5000.0; //200
 
 	DirectX::XMMATRIX view = DirectX::XMMatrixLookToLH(
 		cameraStartPos,
@@ -231,18 +231,18 @@ void Camera::init()
 	DirectX::XMStoreFloat4x4(&this->view, view);
 
 	// Initiate the projection matrix
-	/*DirectX::XMMATRIX proj = DirectX::XMMatrixPerspectiveFovLH(
+	DirectX::XMMATRIX proj = DirectX::XMMatrixPerspectiveFovLH(
 		(this->angle),
 		static_cast<float>(Locator::getD3D()->GETwWidth() / Locator::getD3D()->GETwHeight()),
 		this->nearPlane,
 		this->farPlane
-	);*/
-	DirectX::XMMATRIX proj = DirectX::XMMatrixOrthographicLH(
+	);
+	/*DirectX::XMMATRIX proj = DirectX::XMMatrixOrthographicLH(
 		static_cast<float>(Locator::getD3D()->GETwWidth()) * 10.0f,
 		static_cast<float>(Locator::getD3D()->GETwHeight() * 10.0f),
 		this->nearPlane,
 		this->farPlane
-	);
+	);*/
 
 	DirectX::XMStoreFloat4x4(&this->projection, proj);
 
@@ -279,7 +279,7 @@ void Camera::init(DirectX::XMVECTOR start, DirectX::XMVECTOR target)
 	cameraUpDir = DirectX::XMVector3Normalize(cameraUpDir);
 	DirectX::XMStoreFloat3(&this->cameraUpDir, cameraUpDir);
 
-	this->angle = 0.05f * DirectX::XM_PI;
+	this->angle = 0.60f * DirectX::XM_PI;
 	this->nearPlane = 10.5;
 	this->farPlane = 50000.0; //200
 

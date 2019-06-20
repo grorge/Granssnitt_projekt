@@ -6,7 +6,7 @@ LRESULT CALLBACK wndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
 void D3D::initializeWindow(HINSTANCE hInstance, int ShowWnd, int width, int height, bool windowed)
 {
-	this->wWidth = width;
+	this->wWidth = width ;
 	this->wHeight = height;
 
 	WNDCLASSEX wc;

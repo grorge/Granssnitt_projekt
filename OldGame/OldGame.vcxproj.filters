@@ -175,4 +175,9 @@
       <Filter>Shaders</Filter>
     </FxCompile>
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="keycodes.txt">
+      <Filter>BackendLoop\Logic</Filter>
+    </Text>
+  </ItemGroup>
 </Project>

@@ -46,6 +46,7 @@ public:
 	virtual void SETTextFormat(std::wstring input) = 0;
 
 	virtual void openMenu(DirectX::XMFLOAT2 centerPos) = 0;
+	virtual void pauseMenu() = 0;
 	virtual void closeMenu() = 0;
 	// Cleans memory
 	virtual void cleanUp() = 0;

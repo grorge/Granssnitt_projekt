@@ -48,6 +48,7 @@ public:
 	virtual IDWriteTextFormat* GETTextFormat() { return this->m_pTextFormat; }
 	virtual void SETTextFormat(std::wstring input) { this->msgText = input; }
 	virtual void openMenu(DirectX::XMFLOAT2 centerPos);
+	virtual void pauseMenu();
 	virtual void closeMenu();
 	virtual void cleanUp();
 	virtual void setBackbuffer(ID3D11Texture2D* pBB);

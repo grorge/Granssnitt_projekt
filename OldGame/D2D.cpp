@@ -163,7 +163,7 @@ void D2D::openMenu(DirectX::XMFLOAT2 centerPos)
 
 	for (size_t i = 0; i < 3; i++)
 	{
-		this->g_Menu.boxStyle.pos = DirectX::XMFLOAT2(centerPos.x  + (i * this->g_Menu.boxStyle.size.x), centerPos.y);
+		this->g_Menu.boxStyle.pos = DirectX::XMFLOAT2(centerPos.x, centerPos.y + (i * this->g_Menu.boxStyle.size.y));
 		this->g_Menu.boxStyle.setRect();
 
 		m_pDirect2dFactory->CreateRectangleGeometry(
@@ -176,6 +176,13 @@ void D2D::openMenu(DirectX::XMFLOAT2 centerPos)
 	}
 
 
+}
+
+void D2D::pauseMenu()
+{
+	XMFLOAT2 middlePoint(Locator::getD3D()->GETwWidth() / 2.0f, Locator::getD3D()->GETwHeight() / 2.0f);
+
+	openMenu(middlePoint);
 
 
 }

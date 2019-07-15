@@ -11,6 +11,8 @@ HRESULT D2D::Initialize(IDXGISurface1 *sSurface10)
 	{
 		this->CreateDeviceIndependentResources();
 
+		this->CreateSharedResourses();
+
 		this->CreateDeviceResources(sSurface10);
 	}
 
@@ -102,6 +104,35 @@ HRESULT D2D::CreateDeviceIndependentResources()
 	}
 
 	return hr;
+}
+
+HRESULT D2D::CreateSharedResourses()
+{
+
+	// Get the keyed mutex for the shared texture (for D3D11)///////////////////////////////////////////////////////////////
+	Locator::getD3D()->GETTexture11()->QueryInterface(__uuidof(IDXGIKeyedMutex), (void**)&keyedMutex11);
+
+	//// The D3D11 texture?
+	//IDXGIResource *sharedResource10;
+	//HANDLE sharedHandle10;
+
+	//Locator::getD3D()->GETTexture11()->QueryInterface(__uuidof(IDXGIResource), (void**)&sharedResource10);
+
+	//sharedResource10->GetSharedHandle(&sharedHandle10);
+
+	//sharedResource10->Release();
+
+	//// The keyed mutex is used for interpeting the D3D11 texture so D3D10.1 can read it
+	//IDXGISurface1 *sharedSurface10;
+
+	//Locator::getD3D()->GETgDevice10()->OpenSharedResource(sharedHandle10, __uuidof(IDXGISurface1), (void**)(&sharedSurface10));
+
+	//sharedSurface10->QueryInterface(__uuidof(IDXGIKeyedMutex), (void**)&keyedMutex10);
+	Locator::getD3D()->GETsurface10()->QueryInterface(__uuidof(IDXGIKeyedMutex), (void**)&keyedMutex10);
+
+
+
+	return E_NOTIMPL;
 }
 
 HRESULT D2D::CreateDeviceResources(IDXGISurface1 *sSurface10)
@@ -198,10 +229,15 @@ HRESULT D2D::OnRender()
 {
 	HRESULT hr = S_OK;
 
+	this->keyedMutex11->ReleaseSync(0);
+
+	this->keyedMutex10->AcquireSync(0, 5);
+
 	//hr = CreateDeviceResources();
 	
 	if (SUCCEEDED(hr))
 	{
+
 		this->m_pRenderTarget->BeginDraw();
 		
 		// Background, will be a overlay of the screen if not alpha = 0.0f
@@ -217,6 +253,7 @@ HRESULT D2D::OnRender()
 
 
 		hr = m_pRenderTarget->EndDraw();
+
 	}
 
 	// If something went wrong in EndDraw() it will discard it and redraw
@@ -225,6 +262,11 @@ HRESULT D2D::OnRender()
 		hr = S_OK;
 		DiscardDeviceResources();
 	}
+
+	keyedMutex10->ReleaseSync(1);
+
+	keyedMutex11->AcquireSync(1, 5);
+
 	return hr;
 }
 

@@ -25,8 +25,8 @@ private:
 	// For D2D rendering
 	void createD2Drendering(IDXGIAdapter1 *Adapter);
 	ID3D10Device1 *d3d101Device;
-	IDXGIKeyedMutex *keyedMutex11;
-	IDXGIKeyedMutex *keyedMutex10;
+	//IDXGIKeyedMutex *keyedMutex11;
+	//IDXGIKeyedMutex *keyedMutex10;
 	ID3D11Texture2D *BackBuffer11;
 	ID3D11Texture2D *sharedTex11;
 
@@ -58,6 +58,7 @@ public:
 
 	virtual IDXGISurface1*& GETsurface10();
 	virtual ID3D11Texture2D*& GETTexture11();
+	virtual ID3D10Device1*&  GETgDevice10();
 	virtual void prepD2D();
 	virtual void deprepD2D();
 };

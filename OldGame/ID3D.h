@@ -53,6 +53,7 @@ public:
 	// D2D interactions
 	virtual IDXGISurface1*& GETsurface10() = 0;
 	virtual ID3D11Texture2D*& GETTexture11() = 0;
+	virtual ID3D10Device1*&  GETgDevice10() = 0;
 	virtual void prepD2D() = 0;
 	virtual void deprepD2D() = 0;
 };

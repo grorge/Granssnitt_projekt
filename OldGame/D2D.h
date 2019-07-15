@@ -116,8 +116,13 @@ public:
 
 
 private:
-	// D3D backbuffer
+	// D3D Resourses needed
 	ID3D11Texture2D * r_pBackBuffer;
+	IDXGIKeyedMutex *keyedMutex11;
+	IDXGIKeyedMutex *keyedMutex10;
+
+
+
 
 	// D2D device
 	ID2D1Factory* m_pDirect2dFactory = nullptr;
@@ -130,6 +135,9 @@ private:
 
 	// Initialize device-independent resources. Like factory
 	HRESULT CreateDeviceIndependentResources();
+
+	// Initialize device-dependent resources.
+	HRESULT CreateSharedResourses();
 
 	// Initialize device-dependent resources.
 	HRESULT CreateDeviceResources(IDXGISurface1 *sSurface10);

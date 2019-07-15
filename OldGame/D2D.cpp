@@ -346,12 +346,12 @@ void D2D::drawDebugWindow()
 	printString << text << Locator::getTime()->GETfps() << L"\nFrametime: " << Locator::getTime()->GETFrameTime() << L"\n" << this->msgText;
 	printText = printString.str();
 
-	D2D1_SIZE_F rtSize = m_pRenderTarget->GetSize();
+	//D2D1_SIZE_F rtSize = m_pRenderTarget->GetSize();
 
-	FLOAT width = static_cast<FLOAT>(rtSize.width);
-	FLOAT height = static_cast<FLOAT>(rtSize.height);
+	//FLOAT width = static_cast<FLOAT>(rtSize.width);
+	//FLOAT height = static_cast<FLOAT>(rtSize.height);
 
-	D2D1_RECT_F targetSq = D2D1::RectF(0, 0, width, height);
+	//D2D1_RECT_F targetSq = D2D1::RectF(0, 0, width, height);
 
 	this->m_pRenderTarget->DrawGeometry(this->g_MsgBox.p_rectGeom, this->g_MsgBox.p_colorBrush);
 	this->m_pRenderTarget->FillGeometry(this->g_MsgBox.p_rectGeom, this->g_MsgBox.p_colorBrush);

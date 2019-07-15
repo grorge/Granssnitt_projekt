@@ -23,7 +23,8 @@ struct BoxGeoData {
 		this->rectf = D2D1::RectF(pos.x, pos.y, pos.x + size.x, pos.y + size.y ); 
 
 		//Only padding on the left and rigth to align the text
-		this->paddedRectf = D2D1::RectF(pos.x + padding, pos.y, pos.x + size.x + padding, pos.y + size.y); 
+		// Padded inside
+		this->paddedRectf = D2D1::RectF(pos.x + padding, pos.y, pos.x + size.x - padding, pos.y + size.y); 
 		
 	}
 	D2D1_RECT_F getRect() {
@@ -83,7 +84,6 @@ struct MenuInfo
 		D2D1::ColorF bColor, D2D1::ColorF tColor)
 	{
 		this->nrMenuBoxes = nrOf;
-		//this->pos = pos;
 		this->bColor = bColor;
 		this->tColor = tColor;
 
@@ -143,7 +143,6 @@ private:
 	//Geometries (1: pointer 2: position 3:Size)
 	MenuInfo* g_Menu;
 	BoxGeoData g_MsgBox;
-	//std::vector<BoxGeoData*> v_BoxVector;
 
 
 	IWICImagingFactory *pIWICFactory = nullptr;

@@ -118,10 +118,9 @@ public:
 private:
 	// D3D Resourses needed
 	ID3D11Texture2D * r_pBackBuffer;
+	// Mutexes are used to sync over the different threads
 	IDXGIKeyedMutex *keyedMutex11;
 	IDXGIKeyedMutex *keyedMutex10;
-
-
 
 
 	// D2D device

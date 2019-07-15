@@ -132,8 +132,7 @@ void D3D::createD2Drendering(IDXGIAdapter1 * Adapter)
 	hr = gDevice->CreateTexture2D(&sharedTexDesc, NULL, &sharedTex11);
 
 	// Get the keyed mutex for the shared texture (for D3D11)///////////////////////////////////////////////////////////////
-	//hr = sharedTex11->QueryInterface(__uuidof(IDXGIKeyedMutex), (void**)&keyedMutex11);
-
+	
 	// The D3D11 texture?
 	IDXGIResource *sharedResource10;
 	HANDLE sharedHandle10;
@@ -144,12 +143,9 @@ void D3D::createD2Drendering(IDXGIAdapter1 * Adapter)
 
 	sharedResource10->Release();
 
-	// The keyed mutex is used for interpeting the D3D11 texture so D3D10.1 can read it
 	IDXGISurface1 *sharedSurface10;
 
 	hr = this->d3d101Device->OpenSharedResource(sharedHandle10, __uuidof(IDXGISurface1), (void**)(&sharedSurface10));
-
-	//hr = sharedSurface10->QueryInterface(__uuidof(IDXGIKeyedMutex), (void**)&keyedMutex10);
 
 	this->sharedSurface = sharedSurface10;
 
@@ -157,7 +153,6 @@ void D3D::createD2Drendering(IDXGIAdapter1 * Adapter)
 
 
 }
-
 
 
 void D3D::createVertexBuffer(ID3D11Buffer ** gVertexBuffer, void* v, size_t& stride, size_t& offset, size_t numVertices)
@@ -352,23 +347,6 @@ IDXGISurface1 *& D3D::GETsurface10()
 ID3D11Texture2D *& D3D::GETTexture11()
 {
 	return this->sharedTex11;
-}
-
-ID3D10Device1*&  D3D::GETgDevice10()
-{
-	return this->d3d101Device;
-}
-
-void D3D::prepD2D()
-{
-	// The zero is to sync over diffrent threads
-}
-
-void D3D::deprepD2D()
-{
-
-	this->gDevCon->OMSetBlendState(this->Transparency, NULL, 0xffffffff);
-	
 }
 
 LRESULT CALLBACK wndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)

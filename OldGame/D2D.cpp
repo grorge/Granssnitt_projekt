@@ -108,31 +108,13 @@ HRESULT D2D::CreateDeviceIndependentResources()
 
 HRESULT D2D::CreateSharedResourses()
 {
+	HRESULT hr;
 
-	// Get the keyed mutex for the shared texture (for D3D11)///////////////////////////////////////////////////////////////
-	Locator::getD3D()->GETTexture11()->QueryInterface(__uuidof(IDXGIKeyedMutex), (void**)&keyedMutex11);
+	hr = Locator::getD3D()->GETTexture11()->QueryInterface(__uuidof(IDXGIKeyedMutex), (void**)&keyedMutex11);
 
-	//// The D3D11 texture?
-	//IDXGIResource *sharedResource10;
-	//HANDLE sharedHandle10;
+	hr = Locator::getD3D()->GETsurface10()->QueryInterface(__uuidof(IDXGIKeyedMutex), (void**)&keyedMutex10);
 
-	//Locator::getD3D()->GETTexture11()->QueryInterface(__uuidof(IDXGIResource), (void**)&sharedResource10);
-
-	//sharedResource10->GetSharedHandle(&sharedHandle10);
-
-	//sharedResource10->Release();
-
-	//// The keyed mutex is used for interpeting the D3D11 texture so D3D10.1 can read it
-	//IDXGISurface1 *sharedSurface10;
-
-	//Locator::getD3D()->GETgDevice10()->OpenSharedResource(sharedHandle10, __uuidof(IDXGISurface1), (void**)(&sharedSurface10));
-
-	//sharedSurface10->QueryInterface(__uuidof(IDXGIKeyedMutex), (void**)&keyedMutex10);
-	Locator::getD3D()->GETsurface10()->QueryInterface(__uuidof(IDXGIKeyedMutex), (void**)&keyedMutex10);
-
-
-
-	return E_NOTIMPL;
+	return hr;
 }
 
 HRESULT D2D::CreateDeviceResources(IDXGISurface1 *sSurface10)

@@ -398,10 +398,9 @@ void Renderer::switchRendermode(int mode)
 void Renderer::drawD2D()
 {
 	// Sets up for D2D rendering
-	Locator::getD3D()->prepD2D();
 	// All the rendering in D2D
 	Locator::getD2D()->OnRender();
-	Locator::getD3D()->deprepD2D();
+	Locator::getD3D()->GETgDevCon()->OMSetBlendState(Locator::getD3D()->GETTransp(), NULL, 0xffffffff);
 
 	// Sets the rendermode so it will not change the color
 	int savedMode = this->rndModeData.mode;

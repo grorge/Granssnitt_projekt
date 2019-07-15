@@ -4,8 +4,6 @@ HRESULT D2D::Initialize(IDXGISurface1 *sSurface10)
 {
 	HRESULT hr;
 
-	this->closeMenu();
-
 	hr = CreateDeviceIndependentResources();
 
 	if (SUCCEEDED(hr))
@@ -135,7 +133,7 @@ HRESULT D2D::CreateDeviceResources(IDXGISurface1 *sSurface10)
 
 
 		//Init the menu
-		this->initMenustyle();
+		this->initMenu();
 
 	}
 
@@ -149,41 +147,27 @@ void D2D::DiscardDeviceResources()
 	SafeRelease(&this->pTextColor);
 }
 
-void D2D::openMenu(DirectX::XMFLOAT2 centerPos)
+void D2D::openMenu()
 {
-	this->g_Menu.v_Box.clear();
+	//this->g_Menu->pos = centerPos;
 
-	this->g_Menu.nrMenuBoxes = 3;
+	//this->g_Menu->v_Box.clear();
 
-	for (size_t i = 0; i < this->g_Menu.nrMenuBoxes; i++)
+	//this->g_Menu->nrMenuBoxes = 3;
+
+	for (size_t i = 0; i < this->g_Menu->nrMenuBoxes; i++)
 	{
-		MenuBox tempMenuBox;
-		tempMenuBox.Background.copyStyle(&this->g_Menu.boxStyle);
-		tempMenuBox.Background.pos = DirectX::XMFLOAT2(centerPos.x, centerPos.y + (i  * this->g_Menu.boxStyle.size.y));
-		tempMenuBox.Background.setRect();
-
-		m_pDirect2dFactory->CreateRectangleGeometry(
-			tempMenuBox.Background.getRect(),
-			&tempMenuBox.Background.p_rectGeom
-		);
-
-		tempMenuBox.ToRender = true;
-		tempMenuBox.Text = L"TEST";
-		this->g_Menu.v_Box.push_back(tempMenuBox);
+		this->g_Menu->v_Box.at(i).ToRender = true;
 	}
-
-	this->g_Menu.setText(0, L"Start");
-	this->g_Menu.setText(1, L"Options");
-	this->g_Menu.setText(2, L"Exit");
 
 
 }
 
 void D2D::pauseMenu()
 {
-	XMFLOAT2 middlePoint((Locator::getD3D()->GETwWidth() / 2.0f) - this->g_Menu.boxStyle.size.x/2, Locator::getD3D()->GETwHeight() / 3.0f);
+	//XMFLOAT2 middlePoint((Locator::getD3D()->GETwWidth() / 2.0f) - this->g_Menu->boxStyle.size.x/2, Locator::getD3D()->GETwHeight() / 3.0f);
 
-	openMenu(middlePoint);
+	openMenu(/*middlePoint*/);
 
 
 }
@@ -244,7 +228,6 @@ HRESULT D2D::OnRender()
 
 
 		drawMenu();
-		
 
 		//Draw the Text
 		this->m_pRenderTarget->DrawText(
@@ -254,7 +237,6 @@ HRESULT D2D::OnRender()
 			this->g_MsgBox.getRect(),
 			this->pTextColor
 		);
-
 
 		hr = m_pRenderTarget->EndDraw();
 	}
@@ -270,11 +252,10 @@ HRESULT D2D::OnRender()
 
 void D2D::closeMenu()
 {
-		//SafeRelease(&this->pIWICFactory);
-		SafeRelease(&this->pBitmap);
-	
-		//Removes the screenshot from the directory
-		DeleteFile("include/screenSaved.bmp");
+	for (size_t i = 0; i < this->g_Menu->nrMenuBoxes; i++)
+	{
+		this->g_Menu->v_Box.at(i).ToRender = false;
+	}
 }
 
 void D2D::cleanUp()
@@ -292,7 +273,9 @@ void D2D::cleanUp()
 	// Image factory
 	//SafeRelease(&this->pIWICFactory);
 	// Background-screenshot
-	this->closeMenu();
+
+
+	delete this->g_Menu;
 }
 
 void D2D::setBackbuffer(ID3D11Texture2D * pBB)
@@ -300,57 +283,79 @@ void D2D::setBackbuffer(ID3D11Texture2D * pBB)
 	this->r_pBackBuffer = pBB;
 }
 
-
-void D2D::initMenustyle()
+void D2D::initMenu()
 {
+	// Create the style to be copied onto the boxes
+	XMFLOAT2 sizeFloat(
+		DirectX::XMFLOAT2(200.0f, 100.0f)
+	);
+	XMFLOAT2 middlePoint(
+		(Locator::getD3D()->GETwWidth() / 2.0f) - sizeFloat.x / 2.0f,
+		(Locator::getD3D()->GETwHeight() / 3.0f)
+	);
 
-	// Create Menu default box
-	this->g_Menu.boxStyle.pos = DirectX::XMFLOAT2(0.0f, 0.0f);
-	this->g_Menu.boxStyle.size = DirectX::XMFLOAT2(200.0f, 150.0f);
-	this->g_Menu.boxStyle.padding = 5.0f;
-	this->g_Menu.boxStyle.setRect();
-
-	// Set the default position for the menu, can be changed later 
-	this->g_Menu.pos = DirectX::XMFLOAT2(200.0f, 200.0f);
-
+	this->g_Menu = new MenuInfo(
+			5, 
+			middlePoint, sizeFloat, 5.0f, 
+			D2D1::ColorF(D2D1::ColorF::GreenYellow), D2D1::ColorF(D2D1::ColorF::Black)
+		);
 
 	// Creates the colors
-	this->m_pRenderTarget->CreateSolidColorBrush(D2D1::ColorF(D2D1::ColorF::GreenYellow), &this->g_Menu.boxStyle.p_colorBrush);
-	this->m_pRenderTarget->CreateSolidColorBrush(D2D1::ColorF(D2D1::ColorF::Black), &this->g_Menu.boxStyle.p_textBrush);
+	this->m_pRenderTarget->CreateSolidColorBrush(D2D1::ColorF(this->g_Menu->bColor), &this->g_Menu->boxStyle.p_colorBrush);
+	this->m_pRenderTarget->CreateSolidColorBrush(D2D1::ColorF(this->g_Menu->tColor), &this->g_Menu->boxStyle.p_textBrush);
+
+
+	//---------------------------------------------------
+
+	//Create the boxes
+	this->g_Menu->v_Box.clear();
+	for (size_t i = 0; i < this->g_Menu->nrMenuBoxes; i++)
+	{
+		MenuBox tempMenuBox;
+		tempMenuBox.Background.copyStyle(&this->g_Menu->boxStyle);
+		tempMenuBox.Background.pos = 
+			DirectX::XMFLOAT2(
+				this->g_Menu->pos.x,
+				this->g_Menu->pos.y + (i * (this->g_Menu->boxStyle.size.y + (this->g_Menu->boxStyle.padding)))
+			);
+		tempMenuBox.Background.setRect();
+
+		m_pDirect2dFactory->CreateRectangleGeometry(
+			tempMenuBox.Background.getRect(),
+			&tempMenuBox.Background.p_rectGeom
+		);
+
+		tempMenuBox.ToRender = false;
+		tempMenuBox.Text = L"NOTHING ASSINGED";
+		this->g_Menu->v_Box.push_back(tempMenuBox);
+	}
+
+	// Change the text of each box
+	this->g_Menu->setText(0, L"Start");
+	this->g_Menu->setText(1, L"Options");
+	this->g_Menu->setText(2, L"Exit");
+
+
 }
 
 void D2D::drawMenu()
 {
-	for (size_t i = 0; i < this->g_Menu.v_Box.size(); i++)
+	for (size_t i = 0; i < this->g_Menu->v_Box.size(); i++)
 	{
-		if (this->g_Menu.v_Box.at(i).ToRender)
+		if (this->g_Menu->v_Box.at(i).ToRender)
 		{
-			this->m_pRenderTarget->DrawGeometry(this->g_Menu.v_Box.at(i).Background.p_rectGeom, this->g_Menu.v_Box.at(i).Background.p_colorBrush);
-			this->m_pRenderTarget->FillGeometry(this->g_Menu.v_Box.at(i).Background.p_rectGeom, this->g_Menu.v_Box.at(i).Background.p_colorBrush);
-		
-			//Create padded rect
-			D2D1_RECT_F paddedRect = this->g_Menu.v_Box.at(i).Background.getRect();
-			float regPadding = this->g_Menu.v_Box.at(i).Background.padding;
-			paddedRect.top += regPadding;
-			paddedRect.left += regPadding;
-			paddedRect.bottom += regPadding;
-			paddedRect.right += regPadding;
+			this->m_pRenderTarget->DrawGeometry(this->g_Menu->v_Box.at(i).Background.p_rectGeom, this->g_Menu->v_Box.at(i).Background.p_colorBrush);
+			this->m_pRenderTarget->FillGeometry(this->g_Menu->v_Box.at(i).Background.p_rectGeom, this->g_Menu->v_Box.at(i).Background.p_colorBrush);
 
 			//Draw the Text
 			this->m_pRenderTarget->DrawText(
-				this->g_Menu.v_Box.at(i).Text.c_str(),
-				wcslen(this->g_Menu.v_Box.at(i).Text.c_str()),
+				this->g_Menu->v_Box.at(i).Text.c_str(),
+				wcslen(this->g_Menu->v_Box.at(i).Text.c_str()),
 				this->m_pTextFormat,
-				paddedRect,
-				this->g_Menu.boxStyle.p_textBrush
+				this->g_Menu->v_Box.at(i).Background.getPadRect(),
+				this->g_Menu->boxStyle.p_textBrush
 			);
-
-			//this->g_Menu.v_Box.at(i).Background.getRect(),
 		}
-
-
 	}
-	
-
 }
 

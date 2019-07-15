@@ -17,7 +17,7 @@ public:
 	virtual clock_t GETTime() { return clock(); };
 
 	virtual float GETCoeff() { return this->coefficient * this->factor; };
-	virtual float GETFrameTime() { return this->frametime; };
+	virtual float GETFrameTime() { return (float)this->frametime; };
 	virtual void SETMulti(float factor) { this->factor = factor; };
 	virtual int GETfps() { return this->fps; };
 

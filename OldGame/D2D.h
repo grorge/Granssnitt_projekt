@@ -16,12 +16,21 @@ struct BoxGeoData {
 	DirectX::XMFLOAT2 size = DirectX::XMFLOAT2(0.0f, 0.0f);
 	float padding = 0.0f;
 	D2D1_RECT_F rectf;
+	D2D1_RECT_F paddedRectf;
 
+	// Calcs Rect from the parameters
 	void setRect() {
-		this->rectf = D2D1::RectF(pos.x + padding, pos.y + padding, pos.x + size.x - padding, pos.y + size.y - padding);
+		this->rectf = D2D1::RectF(pos.x, pos.y, pos.x + size.x, pos.y + size.y ); 
+
+		//Only padding on the left and rigth to align the text
+		this->paddedRectf = D2D1::RectF(pos.x + padding, pos.y, pos.x + size.x + padding, pos.y + size.y); 
+		
 	}
 	D2D1_RECT_F getRect() {
 		return this->rectf;
+	}
+	D2D1_RECT_F getPadRect() {
+		return this->paddedRectf;
 	}
 
 	void copyStyle(BoxGeoData* source)
@@ -31,6 +40,7 @@ struct BoxGeoData {
 		padding = source->padding;
 		p_rectGeom = source->p_rectGeom;
 		p_colorBrush = source->p_colorBrush;
+		p_textBrush = source->p_textBrush;
 
 		
 	};
@@ -39,7 +49,6 @@ struct BoxGeoData {
 struct MenuBox
 {
 	DirectX::XMFLOAT2 pos = DirectX::XMFLOAT2(0.0f, 0.0f);
-
 
 	BoxGeoData Background;
 	std::wstring Text;
@@ -51,21 +60,38 @@ struct MenuInfo
 	DirectX::XMFLOAT2 pos = DirectX::XMFLOAT2(0.0f, 0.0f);
 
 	BoxGeoData boxStyle;
+	D2D1::ColorF bColor = D2D1::ColorF(D2D1::ColorF::White);
+	D2D1::ColorF tColor = D2D1::ColorF(D2D1::ColorF::White);
 
 	int nrMenuBoxes = 1;
 	std::vector<MenuBox> v_Box;
 
-	void setText(int button, std::wstring text)
+	void setText(int index, std::wstring text)
 	{
-		v_Box.at(button).Text = text;
+		v_Box.at(index).Text = text;
 	};
 
-	MenuInfo();
-	MenuInfo(int nrOf, DirectX::XMFLOAT2 pos, DirectX::XMFLOAT2 size, float padding, D2D1::ColorF bColor, D2D1::ColorF tColor)
+	MenuInfo()
+	{
+		this->nrMenuBoxes = 0;
+		this->boxStyle = BoxGeoData();
+	};
+	
+	//Nr of boxes, topLeft, Size, Padding, BackgroundColor, TextColor
+	MenuInfo(int nrOf, DirectX::XMFLOAT2 pos, 
+		DirectX::XMFLOAT2 size, float padding,
+		D2D1::ColorF bColor, D2D1::ColorF tColor)
 	{
 		this->nrMenuBoxes = nrOf;
-		this->pos = pos;
+		//this->pos = pos;
+		this->bColor = bColor;
+		this->tColor = tColor;
 
+		this->pos = pos;
+		this->boxStyle.pos = pos;
+		this->boxStyle.size = size;
+		this->boxStyle.padding = padding;
+		this->boxStyle.setRect();
 	};
 };
 
@@ -82,7 +108,7 @@ public:
 	virtual ID2D1RenderTarget* GETRenderTarget() { return this->m_pRenderTarget; }
 	virtual IDWriteTextFormat* GETTextFormat() { return this->m_pTextFormat; }
 	virtual void SETTextFormat(std::wstring input) { this->msgText = input; }
-	virtual void openMenu(DirectX::XMFLOAT2 centerPos);
+	virtual void openMenu();
 	virtual void pauseMenu();
 	virtual void closeMenu();
 	virtual void cleanUp();
@@ -115,7 +141,7 @@ private:
 	ID2D1SolidColorBrush * pTextColor = nullptr;
 
 	//Geometries (1: pointer 2: position 3:Size)
-	MenuInfo g_Menu;
+	MenuInfo* g_Menu;
 	BoxGeoData g_MsgBox;
 	//std::vector<BoxGeoData*> v_BoxVector;
 
@@ -142,7 +168,7 @@ private:
 	clock_t lastDisplay = clock_t();
 
 
-	void initMenustyle();
+	void initMenu();
 	void drawMenu();
 };
 

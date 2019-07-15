@@ -203,7 +203,7 @@ void BasicRenderState::handleEvents(GameManager * gm)
 			GetCursorPos(&mPoint);
 			// Converts it to the pixels in the window
 			ScreenToClient(Locator::getD3D()->GEThwnd(), &mPoint);
-			Locator::getD2D()->openMenu(XMFLOAT2(mPoint.x * (1.0f/0.8f), mPoint.y));
+			Locator::getD2D()->openMenu(/*XMFLOAT2(mPoint.x * (1.0f/0.8f), mPoint.y)*/);
 		}
 		else if (msg.wParam == 0x12) // alt
 		{

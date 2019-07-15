@@ -45,7 +45,7 @@ public:
 	// Sends a wstring to be written to the screen
 	virtual void SETTextFormat(std::wstring input) = 0;
 
-	virtual void openMenu(DirectX::XMFLOAT2 centerPos) = 0;
+	virtual void openMenu() = 0;
 	virtual void pauseMenu() = 0;
 	virtual void closeMenu() = 0;
 	// Cleans memory

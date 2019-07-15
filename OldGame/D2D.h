@@ -170,6 +170,7 @@ private:
 
 	void initMenu();
 	void drawMenu();
+	void drawDebugWindow();
 };
 
 

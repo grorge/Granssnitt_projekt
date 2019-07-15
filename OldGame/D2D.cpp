@@ -209,34 +209,12 @@ HRESULT D2D::OnRender()
 
 		//this->checkFPS();
 
-		std::wstring text = L"FPS: ";
-
-		//Create our string
-		std::wostringstream printString;
-		printString << text << Locator::getTime()->GETfps() << L"\nFrametime: " << Locator::getTime()->GETFrameTime() << L"\n" << this->msgText;
-		printText = printString.str();
+		// Draw the window with frame infomation
+		drawDebugWindow();
 		
-		D2D1_SIZE_F rtSize = m_pRenderTarget->GetSize();
-
-		FLOAT width = static_cast<FLOAT>(rtSize.width);
-		FLOAT height = static_cast<FLOAT>(rtSize.height);
-
-		D2D1_RECT_F targetSq = D2D1::RectF(0, 0, width, height);
-
-		this->m_pRenderTarget->DrawGeometry(this->g_MsgBox.p_rectGeom, this->g_MsgBox.p_colorBrush);
-		this->m_pRenderTarget->FillGeometry(this->g_MsgBox.p_rectGeom, this->g_MsgBox.p_colorBrush);
-
-
+		// Draw the menu
 		drawMenu();
 
-		//Draw the Text
-		this->m_pRenderTarget->DrawText(
-			printText.c_str(),
-			wcslen(printText.c_str()),
-			this->m_pTextFormat,
-			this->g_MsgBox.getRect(),
-			this->pTextColor
-		);
 
 		hr = m_pRenderTarget->EndDraw();
 	}
@@ -357,5 +335,34 @@ void D2D::drawMenu()
 			);
 		}
 	}
+}
+
+void D2D::drawDebugWindow()
+{
+	std::wstring text = L"FPS: ";
+
+	//Create our string
+	std::wostringstream printString;
+	printString << text << Locator::getTime()->GETfps() << L"\nFrametime: " << Locator::getTime()->GETFrameTime() << L"\n" << this->msgText;
+	printText = printString.str();
+
+	D2D1_SIZE_F rtSize = m_pRenderTarget->GetSize();
+
+	FLOAT width = static_cast<FLOAT>(rtSize.width);
+	FLOAT height = static_cast<FLOAT>(rtSize.height);
+
+	D2D1_RECT_F targetSq = D2D1::RectF(0, 0, width, height);
+
+	this->m_pRenderTarget->DrawGeometry(this->g_MsgBox.p_rectGeom, this->g_MsgBox.p_colorBrush);
+	this->m_pRenderTarget->FillGeometry(this->g_MsgBox.p_rectGeom, this->g_MsgBox.p_colorBrush);
+
+	//Draw the Text
+	this->m_pRenderTarget->DrawText(
+		printText.c_str(),
+		wcslen(printText.c_str()),
+		this->m_pTextFormat,
+		this->g_MsgBox.getPadRect(),
+		this->pTextColor
+	);
 }
 

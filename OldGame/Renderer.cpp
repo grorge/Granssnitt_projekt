@@ -338,8 +338,6 @@ void Renderer::init()
 
 void Renderer::render(std::vector<Object*> objects)
 {
-
-
 	size_t offset = 0;
 	for (auto i : objects)
 	{		
@@ -397,9 +395,10 @@ void Renderer::switchRendermode(int mode)
 
 void Renderer::drawD2D()
 {
-	// Sets up for D2D rendering
-	// All the rendering in D2D
+	// Renders the GUI on the texture
 	Locator::getD2D()->OnRender();
+
+	//Sets transparancy for to not cover the screen
 	Locator::getD3D()->GETgDevCon()->OMSetBlendState(Locator::getD3D()->GETTransp(), NULL, 0xffffffff);
 
 	// Sets the rendermode so it will not change the color
@@ -409,24 +408,25 @@ void Renderer::drawD2D()
 	//Draw the quad over the screen with the D2D as a texture
 	Locator::getD3D()->mapConstantBuffer(&this->constBuff, &this->guiRndData->objBuffData, sizeof(this->guiRndData->objBuffData));
 	Locator::getD3D()->setConstantBuffer(this->constBuff, SHADER::VERTEX, 0, 1);
-
 	size_t offset = 0;
-
 	Locator::getD3D()->setIndexBuffer(this->guiRndData->indexBuffer, 0);
 	Locator::getD3D()->setVertexBuffer(&this->guiRndData->vertBuffer, this->guiRndData->stride, offset);
 	
+		// Identety matrix to have the texture be placed over the screen
 	XMMATRIX WVP = XMMatrixIdentity();
 	WVP = XMMatrixTranspose(WVP);
 	XMStoreFloat4x4(&this->guiRndData->objBuffData.WVP, WVP);
 	XMStoreFloat4x4(&this->guiRndData->objBuffData.world, WVP);
 	//Locator::getD3D()->GETgDevCon()->UpdateSubresource(this->constBuff, 0, NULL, &this->guiRndData->objBuffData, 0, 0);
 	Locator::getD3D()->GETgDevCon()->VSSetConstantBuffers(0, 1, &this->constBuff);
-
+		// Send/Set the texture to the shader
 	Locator::getD3D()->GETgDevCon()->PSSetShaderResources(0, 1, &this->guiRndData->texSRV);
 	Locator::getD3D()->GETgDevCon()->PSSetSamplers(0, 1, &this->gSampler);
+		// Draw
 	Locator::getD3D()->clockDraw(6);
 
-	this->switchRendermode(savedMode);
+	// Return too the regular rendermode, Can be changed to have multiple shaders
+	this->switchRendermode(savedMode); 
 
 }
 

@@ -8,6 +8,7 @@
 #include "Locator.h"
 #include "CleanupTools.h"
 
+// Holds the graphical data for each box on the screen
 struct BoxGeoData {
 	ID2D1RectangleGeometry* p_rectGeom = nullptr;
 	ID2D1SolidColorBrush* p_colorBrush = nullptr;
@@ -30,10 +31,12 @@ struct BoxGeoData {
 	D2D1_RECT_F getRect() {
 		return this->rectf;
 	}
+	// Retuns RECT with margin to hte sides of the visual box
 	D2D1_RECT_F getPadRect() {
 		return this->paddedRectf;
 	}
 
+	// Used to copy the BoxStyle on the menu
 	void copyStyle(BoxGeoData* source)
 	{
 		pos = source->pos;
@@ -47,6 +50,7 @@ struct BoxGeoData {
 	};
 };
 
+// Holds the data of each Button
 struct MenuBox
 {
 	DirectX::XMFLOAT2 pos = DirectX::XMFLOAT2(0.0f, 0.0f);
@@ -56,6 +60,7 @@ struct MenuBox
 	bool ToRender;
 };
 
+// Handles the menu
 struct MenuInfo
 {
 	DirectX::XMFLOAT2 pos = DirectX::XMFLOAT2(0.0f, 0.0f);
@@ -64,9 +69,10 @@ struct MenuInfo
 	D2D1::ColorF bColor = D2D1::ColorF(D2D1::ColorF::White);
 	D2D1::ColorF tColor = D2D1::ColorF(D2D1::ColorF::White);
 
-	int nrMenuBoxes = 1;
+	int nrMenuBoxes = 0;
 	std::vector<MenuBox> v_Box;
 
+	// Changes the text of the indexed Button
 	void setText(int index, std::wstring text)
 	{
 		v_Box.at(index).Text = text;
@@ -118,24 +124,23 @@ public:
 private:
 	// D3D Resourses needed
 	ID3D11Texture2D * r_pBackBuffer;
-	// Mutexes are used to sync over the different threads
+	// Mutexes are used to sync over the different threads, prevents overlap from D2D and D3D
 	IDXGIKeyedMutex *keyedMutex11;
 	IDXGIKeyedMutex *keyedMutex10;
 
-
 	// D2D device
 	ID2D1Factory* m_pDirect2dFactory = nullptr;
-	// Render target, dose all calls to render
+	// Render target, calls to render
 	ID2D1RenderTarget* m_pRenderTarget = nullptr;
 	// D2D device for text
 	IDWriteFactory* m_pDirectWriteFactory = nullptr;
-	// Holds formating for text, ea Font
+	// Holds formating for text, ea Font etc.
 	IDWriteTextFormat* m_pTextFormat = nullptr;
 
 	// Initialize device-independent resources. Like factory
 	HRESULT CreateDeviceIndependentResources();
 
-	// Initialize device-dependent resources.
+	// Initialize mutexes.
 	HRESULT CreateSharedResourses();
 
 	// Initialize device-dependent resources.
@@ -149,11 +154,11 @@ private:
 
 	//Geometries (1: pointer 2: position 3:Size)
 	MenuInfo* g_Menu;
+	// DebugWindow to write the frame-info
 	BoxGeoData g_MsgBox;
 
 
 	IWICImagingFactory *pIWICFactory = nullptr;
-	//PCWSTR uri = nullptr;
 	UINT destinationWidth;
 	UINT destinationHeight;
 	ID2D1Bitmap* pBitmap = nullptr;

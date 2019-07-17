@@ -8,7 +8,6 @@ BasicRenderState BasicRenderState::sBasicRenderState;
 
 void BasicRenderState::initScene()
 {
-
 	Object* newObject;
 
 	//Gound
@@ -19,6 +18,7 @@ void BasicRenderState::initScene()
 	this->objHandler->addObject(newObject, OBJECTLIST::STATIC);
 
 	////MODLES
+
 	//PreLoad modles, texture dosnt matter
 	DynObject(this->cam, L"LP_tree", L"planks");
 	DynObject(this->cam, L"LP_male", L"planks");
@@ -48,7 +48,9 @@ void BasicRenderState::initScene()
 	//		XMFLOAT3(-100.0f, -100.0f, 1000.0f))
 	//	, OBJECTLIST::MOVING);
 
-	////Test for preformance
+	
+	/////Test for preformance//////
+
 	//{
 	//	float tempXaxis = -3000.0f;
 	//	for (int i = 0; i < 200; i++)
@@ -59,10 +61,12 @@ void BasicRenderState::initScene()
 	//				50.0f, 
 	//				XMFLOAT3(tempXaxis, -100.0f, 2000.0f))
 	//			, OBJECTLIST::MOVING);
-
 	//		tempXaxis += 200.0f;
 	//	}
 	//}
+
+	/////--------------------//////
+
 
 	//newObject = new DynObject(this->cam, L"bottle", L"gravel");
 	//newObject->SETSizeFloat3(XMFLOAT3(100.0f, 150.0f, 50.0f));

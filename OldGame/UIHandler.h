@@ -21,14 +21,22 @@ class UIHandler
 private:
 
 	MenuInfo* menu;
-
+	ID2D1RenderTarget* p_rndTarget = nullptr;
+	// D2D device for text
+	ID2D1Factory* p_Factory = nullptr;
 	//std::array<MenuInfo* , 2> a_menus;
 
+	UIData* rndData;
 
 	// Menus
 	bool createPause();
+
+
+	// 
+	void fillRndData();
 public:
-	UIHandler();
+	//UIHandler();
+	UIHandler(ID2D1RenderTarget* m_pRenderTarget = nullptr, ID2D1Factory* p_Factory = nullptr);
 	~UIHandler();
 	void cleanUp();
 

@@ -168,6 +168,8 @@ void D2D::openMenu()
 
 	//this->g_Menu->nrMenuBoxes = 3;
 
+	ui->openMenu(0);
+
 	for (size_t i = 0; i < this->g_Menu->nrMenuBoxes; i++)
 	{
 		this->g_Menu->v_Box.at(i).ToRender = true;
@@ -254,6 +256,8 @@ HRESULT D2D::OnRender()
 
 void D2D::closeMenu()
 {
+	ui->closeMenu(0);
+
 	for (size_t i = 0; i < this->g_Menu->nrMenuBoxes; i++)
 	{
 		this->g_Menu->v_Box.at(i).ToRender = false;
@@ -277,7 +281,8 @@ void D2D::cleanUp()
 	// Background-screenshot
 
 
-	delete this->g_Menu;
+	ui->cleanUp();
+	delete this->ui;
 }
 
 void D2D::setBackbuffer(ID3D11Texture2D * pBB)

@@ -55,6 +55,9 @@
     <ClCompile Include="ObjPosition.cpp">
       <Filter>GameCont</Filter>
     </ClCompile>
+    <ClCompile Include="UIHandler.cpp">
+      <Filter>BackendLoop\GUI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="D3D.h">
@@ -132,6 +135,12 @@
     <ClInclude Include="ObjPosition.h">
       <Filter>GameCont</Filter>
     </ClInclude>
+    <ClInclude Include="UIHandler.h">
+      <Filter>BackendLoop\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="MenuStructs.h">
+      <Filter>BackendLoop\GUI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Setup">
@@ -160,6 +169,9 @@
     </Filter>
     <Filter Include="Setup\Locator">
       <UniqueIdentifier>{1c31a6e2-4c8b-4e5e-8355-a4b7a55a77b1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="BackendLoop\GUI">
+      <UniqueIdentifier>{86b8a221-5ad8-4bb0-ba92-867640bf5a3f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

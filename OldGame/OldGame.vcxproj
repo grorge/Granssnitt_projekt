@@ -148,6 +148,7 @@
     <ClInclude Include="ControlCamera.h" />
     <ClInclude Include="D2D.h" />
     <ClInclude Include="D3D.h" />
+    <ClInclude Include="MenuStructs.h" />
     <ClInclude Include="ObjPosition.h" />
     <ClInclude Include="ID2D.h" />
     <ClInclude Include="ID3D.h" />
@@ -166,6 +167,7 @@
     <ClInclude Include="StateManager.h" />
     <ClInclude Include="StaticObject.h" />
     <ClInclude Include="Time.h" />
+    <ClInclude Include="UIHandler.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BasicRenderState.cpp" />
@@ -186,6 +188,7 @@
     <ClCompile Include="StateManager.cpp" />
     <ClCompile Include="StaticObject.cpp" />
     <ClCompile Include="Time.cpp" />
+    <ClCompile Include="UIHandler.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -210,11 +213,6 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="keycodes.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\StaticLib1\StaticLib1\StaticLib1.vcxproj">
-      <Project>{e0009912-4bbe-4c26-9b8b-5aed96391300}</Project>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

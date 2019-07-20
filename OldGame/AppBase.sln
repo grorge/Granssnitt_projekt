@@ -5,6 +5,8 @@ VisualStudioVersion = 15.0.27428.2015
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "AppBase", "OldGame.vcxproj", "{A8F44E39-45B5-4E44-BBE4-5435683C8D47}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "StaticLib1", "..\..\StaticLib1\StaticLib1\StaticLib1.vcxproj", "{E0009912-4BBE-4C26-9B8B-5AED96391300}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -21,6 +23,14 @@ Global
 		{A8F44E39-45B5-4E44-BBE4-5435683C8D47}.Release|x64.Build.0 = Release|x64
 		{A8F44E39-45B5-4E44-BBE4-5435683C8D47}.Release|x86.ActiveCfg = Release|Win32
 		{A8F44E39-45B5-4E44-BBE4-5435683C8D47}.Release|x86.Build.0 = Release|Win32
+		{E0009912-4BBE-4C26-9B8B-5AED96391300}.Debug|x64.ActiveCfg = Debug|x64
+		{E0009912-4BBE-4C26-9B8B-5AED96391300}.Debug|x64.Build.0 = Debug|x64
+		{E0009912-4BBE-4C26-9B8B-5AED96391300}.Debug|x86.ActiveCfg = Debug|Win32
+		{E0009912-4BBE-4C26-9B8B-5AED96391300}.Debug|x86.Build.0 = Debug|Win32
+		{E0009912-4BBE-4C26-9B8B-5AED96391300}.Release|x64.ActiveCfg = Release|x64
+		{E0009912-4BBE-4C26-9B8B-5AED96391300}.Release|x64.Build.0 = Release|x64
+		{E0009912-4BBE-4C26-9B8B-5AED96391300}.Release|x86.ActiveCfg = Release|Win32
+		{E0009912-4BBE-4C26-9B8B-5AED96391300}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -26,7 +26,7 @@ private:
 	ID2D1Factory* p_Factory = nullptr;
 	//std::array<MenuInfo* , 2> a_menus;
 
-	UIData* rndData;
+	std::vector<UIData*> rndData;
 
 	// Menus
 	bool createPause();
@@ -44,7 +44,7 @@ public:
 	bool closeMenu(size_t index);
 
 	size_t nrOf;
-	UIData* GETUIdata();
+	std::vector<UIData*> GETUIdata();
 	
 };
 

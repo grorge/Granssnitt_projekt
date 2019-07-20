@@ -60,15 +60,16 @@ bool UIHandler::createPause()
 void UIHandler::fillRndData()
 {
 	size_t counter = 0;
+	this->rndData.clear();
 	for (size_t i = 0; i < this->menu->nrMenuBoxes; i++)
 	{
 		if (this->menu->v_Box.at(i).ToRender)
 		{
-			UIData tempUIData;
-			tempUIData.GeoData = this->menu->v_Box.at(i).Background;
-			tempUIData.TxtData.wstring = this->menu->v_Box.at(i).Text;
+			UIData* tempUIData = new UIData();
+			tempUIData->GeoData = this->menu->v_Box.at(i).Background;
+			tempUIData->TxtData.wstring = this->menu->v_Box.at(i).Text;
 
-			this->rndData[counter] = tempUIData;
+			this->rndData.push_back(tempUIData);
 			counter++;
 		};
 	}
@@ -81,7 +82,7 @@ UIHandler::UIHandler(ID2D1RenderTarget * p_rndTarget, ID2D1Factory * p_Factory)
 	this->p_rndTarget = p_rndTarget;
 	this->p_Factory = p_Factory;
 
-	this->rndData = new UIData();
+	this->rndData.clear();
 
 
 	this->createPause();
@@ -116,7 +117,7 @@ bool UIHandler::closeMenu(size_t index)
 	return false;
 }
 
-UIData * UIHandler::GETUIdata()
+std::vector<UIData*> UIHandler::GETUIdata()
 {
 	
 

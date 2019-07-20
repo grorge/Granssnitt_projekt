@@ -301,19 +301,21 @@ void D2D::initMenu()
 
 void D2D::drawMenu()
 {
-	UIData* p_menuArr = ui->GETUIdata();
-	for (size_t i = 0; i < this->ui->nrOf; i++)
+	std::vector<UIData*> p_menuArr = ui->GETUIdata();
+	//for (size_t i = 0; i < this->ui->nrOf; i++)
+	for (size_t i = 0; i < p_menuArr.size(); i++)
 	{
-		this->m_pRenderTarget->DrawGeometry(p_menuArr[i].GeoData.p_rectGeom, p_menuArr[i].GeoData.p_colorBrush);
-		this->m_pRenderTarget->FillGeometry(p_menuArr[i].GeoData.p_rectGeom, p_menuArr[i].GeoData.p_colorBrush);
+
+		this->m_pRenderTarget->DrawGeometry(p_menuArr.at(i)->GeoData.p_rectGeom, p_menuArr.at(i)->GeoData.p_colorBrush);
+		this->m_pRenderTarget->FillGeometry(p_menuArr.at(i)->GeoData.p_rectGeom, p_menuArr.at(i)->GeoData.p_colorBrush);
 
 		//Draw the Text
 		this->m_pRenderTarget->DrawText(
-			p_menuArr[i].TxtData.wstring.c_str(),
-			wcslen(p_menuArr[i].TxtData.wstring.c_str()),
+			p_menuArr.at(i)->TxtData.wstring.c_str(),
+			wcslen(p_menuArr.at(i)->TxtData.wstring.c_str()),
 			this->m_pTextFormat,
-			p_menuArr[i].GeoData.getPadRect(),
-			p_menuArr[i].GeoData.p_textBrush
+			p_menuArr.at(i)->GeoData.getPadRect(),
+			p_menuArr.at(i)->GeoData.p_textBrush
 		);
 		
 	}

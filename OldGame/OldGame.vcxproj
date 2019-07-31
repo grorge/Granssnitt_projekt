@@ -176,6 +176,7 @@
     <ClCompile Include="ControlCamera.cpp" />
     <ClCompile Include="D2D.cpp" />
     <ClCompile Include="D3D.cpp" />
+    <ClCompile Include="MenuStructs.cpp" />
     <ClCompile Include="ModelLoader.cpp" />
     <ClCompile Include="MouseInput.cpp" />
     <ClCompile Include="Object.cpp" />

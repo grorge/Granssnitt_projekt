@@ -1,6 +1,35 @@
 #include "UIHandler.h"
 #include "Locator.h"
 
+void UIHandler::initResources()
+{
+	static const WCHAR msc_fontName[] = L"Script"; // Verdana, Rockwell, Agency FB, Script
+	static const FLOAT msc_fontSize = 20;
+
+	DWriteCreateFactory(
+		DWRITE_FACTORY_TYPE_SHARED,
+		__uuidof(IDWriteFactory),
+		reinterpret_cast<IUnknown **>(&this->p_DirectWriteFactory)
+	);
+
+	// Create a DirectWrite text format object.
+	this->p_DirectWriteFactory->CreateTextFormat(
+		msc_fontName,
+		NULL,
+		DWRITE_FONT_WEIGHT_REGULAR,
+		DWRITE_FONT_STYLE_NORMAL,
+		DWRITE_FONT_STRETCH_NORMAL,
+		msc_fontSize,
+		L"en-us", //L"", //locale
+		&this->p_TextFormat
+	);
+
+	// Center the text horizontally and vertically.
+	this->p_TextFormat->SetTextAlignment(DWRITE_TEXT_ALIGNMENT_LEADING);
+
+	this->p_TextFormat->SetParagraphAlignment(DWRITE_PARAGRAPH_ALIGNMENT_CENTER);
+}
+
 bool UIHandler::createPause()
 {
 	// Create the style to be copied onto the boxes
@@ -44,7 +73,8 @@ bool UIHandler::createPause()
 		);
 
 		tempMenuBox.ToRender = false;
-		tempMenuBox.Text = L"NOTHING ASSINGED";
+		tempMenuBox.TxtData.wstring = L"NOTHING ASSINGED";
+		tempMenuBox.TxtData.textFormat = this->p_TextFormat;
 		this->menu->v_Box.push_back(tempMenuBox);
 	}
 
@@ -67,7 +97,7 @@ void UIHandler::fillRndData()
 		{
 			UIData* tempUIData = new UIData();
 			tempUIData->GeoData = this->menu->v_Box.at(i).Background;
-			tempUIData->TxtData.wstring = this->menu->v_Box.at(i).Text;
+			tempUIData->TxtData.wstring = this->menu->v_Box.at(i).TxtData.wstring;
 
 			this->rndData.push_back(tempUIData);
 			counter++;
@@ -81,6 +111,9 @@ UIHandler::UIHandler(ID2D1RenderTarget * p_rndTarget, ID2D1Factory * p_Factory)
 {
 	this->p_rndTarget = p_rndTarget;
 	this->p_Factory = p_Factory;
+
+	this->initResources();
+
 
 	this->rndData.clear();
 
@@ -122,4 +155,14 @@ std::vector<UIData*> UIHandler::GETUIdata()
 	
 
 	return this->rndData;
+}
+
+void UIHandler::drawData()
+{
+	//Draw the current menu
+	for (auto i : this->menu->v_Box)
+	{
+		if (i.ToRender)
+			i.draw(this->p_rndTarget);
+	}
 }

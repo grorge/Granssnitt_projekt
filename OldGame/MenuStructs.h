@@ -45,6 +45,7 @@ struct BoxGeoData {
 // Holds the graphical data for each box on the screen
 struct TextData {
 	std::wstring wstring;
+	IDWriteTextFormat* textFormat;
 };
 
 // Holds the data of each Button
@@ -53,8 +54,10 @@ struct MenuBox
 	DirectX::XMFLOAT2 pos = DirectX::XMFLOAT2(0.0f, 0.0f);
 
 	BoxGeoData Background;
-	std::wstring Text;
+	TextData TxtData;
 	bool ToRender;
+
+	void draw(ID2D1RenderTarget * p_rndTarget);
 };
 
 // Handles the menu
@@ -72,7 +75,7 @@ struct MenuInfo
 	// Changes the text of the indexed Button
 	void setText(int index, std::wstring text)
 	{
-		v_Box.at(index).Text = text;
+		v_Box.at(index).TxtData.wstring = text;
 	};
 
 	MenuInfo()

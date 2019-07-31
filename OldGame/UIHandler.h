@@ -20,19 +20,24 @@ class UIHandler
 {
 private:
 
-	MenuInfo* menu;
+	void initResources();
 	ID2D1RenderTarget* p_rndTarget = nullptr;
+	IDWriteTextFormat* p_TextFormat = nullptr;
 	// D2D device for text
 	ID2D1Factory* p_Factory = nullptr;
+	IDWriteFactory* p_DirectWriteFactory = nullptr;
+
+	// Menus
+	MenuInfo* menu;
 	//std::array<MenuInfo* , 2> a_menus;
 
 	std::vector<UIData*> rndData;
 
-	// Menus
+	// Initiate Menus
 	bool createPause();
 
 
-	// 
+	// Updates the rndData to have the relevent geometries
 	void fillRndData();
 public:
 	//UIHandler();
@@ -45,6 +50,8 @@ public:
 
 	size_t nrOf;
 	std::vector<UIData*> GETUIdata();
+
+	void drawData();
 	
 };
 

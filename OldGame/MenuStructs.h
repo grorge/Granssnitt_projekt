@@ -40,6 +40,7 @@ struct BoxGeoData {
 		padding = source->padding;
 		p_rectGeom = source->p_rectGeom;
 		p_colorBrush = source->p_colorBrush;
+		p_highligthColorBrush = source->p_highligthColorBrush;
 		p_textBrush = source->p_textBrush;
 	};
 };
@@ -55,8 +56,10 @@ struct MenuBox
 	DirectX::XMFLOAT2 pos = DirectX::XMFLOAT2(0.0f, 0.0f);
 
 	BoxGeoData Background;
+	bool highligth = false;
 	TextData TxtData;
-	bool ToRender;
+	bool ToRender = false;
+
 
 	void draw(ID2D1RenderTarget * p_rndTarget);
 };

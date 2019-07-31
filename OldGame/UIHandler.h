@@ -55,6 +55,7 @@ public:
 	std::vector<UIData*> GETUIdata();
 
 	void drawData();
+	void update();
 	
 };
 

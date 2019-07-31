@@ -152,7 +152,7 @@ UIHandler::~UIHandler()
 
 void UIHandler::cleanUp()
 {
-	delete this->p_DirectWriteFactory;
+	//delete this->p_DirectWriteFactory;
 	//delete this->menu->boxStyle.p_colorBrush;
 	//delete this->menu->boxStyle.p_textBrush;
 	//delete this->menu;
@@ -202,9 +202,12 @@ void UIHandler::drawData()
 		}
 	}
 
-	// Draw title
+	// The menu is open
 	if (drawMenu)
 	{
+		update();
+
+		//Draw menu
 		p_rndTarget->DrawText(
 			this->menu->titleText.wstring.c_str(),
 			wcslen(this->menu->titleText.wstring.c_str()),
@@ -213,5 +216,36 @@ void UIHandler::drawData()
 			this->menu->boxStyle.p_textBrush
 		);
 	}
+	
+}
+
+void UIHandler::update()
+{
+	POINT p;
+	
+	GetCursorPos(&p);
+
+	if (ScreenToClient(Locator::getD3D()->GEThwnd(), &p))
+	{
+		int index = 0;
+		for (auto i : menu->v_Box)
+		{
+
+			if (i.Background.pos.x < p.x && i.Background.pos.x + i.Background.size.x > p.x
+				&&
+				i.Background.pos.y < p.y && i.Background.pos.y + i.Background.size.y > p.y)
+			{
+				
+				menu->v_Box.at(index).highligth = true;
+				
+			}
+			else
+			{
+				menu->v_Box.at(index).highligth = false;
+			}
+			index++;
+		}
+	}
+
 	
 }

@@ -306,6 +306,7 @@ void D2D::drawMenu()
 
 	ui->drawData();
 
+
 	//for (auto i : p_menuArr)
 	//{
 	//	this->m_pRenderTarget->DrawGeometry(i->GeoData.p_rectGeom, i->GeoData.p_colorBrush);

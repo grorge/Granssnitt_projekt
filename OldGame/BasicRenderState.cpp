@@ -209,7 +209,7 @@ void BasicRenderState::handleEvents(GameManager * gm)
 			ScreenToClient(Locator::getD3D()->GEThwnd(), &mPoint);
 			Locator::getD2D()->openMenu(/*XMFLOAT2(mPoint.x * (1.0f/0.8f), mPoint.y)*/);
 		}
-		else if (msg.wParam == 0x12) // alt
+		else if (msg.wParam == 0x20) // space
 		{
 			Locator::getD2D()->pauseMenu();
 		}

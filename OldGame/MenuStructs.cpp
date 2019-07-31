@@ -2,8 +2,16 @@
 
 void MenuBox::draw(ID2D1RenderTarget * p_rndTarget)
 {
-	p_rndTarget->DrawGeometry(this->Background.p_rectGeom, this->Background.p_colorBrush);
-	p_rndTarget->FillGeometry(this->Background.p_rectGeom, this->Background.p_colorBrush);
+	if (highligth)
+	{
+		p_rndTarget->DrawGeometry(this->Background.p_rectGeom, this->Background.p_highligthColorBrush);
+		p_rndTarget->FillGeometry(this->Background.p_rectGeom, this->Background.p_highligthColorBrush);
+	}
+	else
+	{
+		p_rndTarget->DrawGeometry(this->Background.p_rectGeom, this->Background.p_colorBrush);
+		p_rndTarget->FillGeometry(this->Background.p_rectGeom, this->Background.p_colorBrush);
+	}
 
 	//Draw the Text
 	p_rndTarget->DrawText(

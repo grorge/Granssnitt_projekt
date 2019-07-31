@@ -152,11 +152,13 @@ UIHandler::~UIHandler()
 void UIHandler::cleanUp()
 {
 	delete this->p_DirectWriteFactory;
-	delete this->menu;
-	delete this->tf_Buttons;
-	delete this->tf_Title;
+	//delete this->menu->boxStyle.p_colorBrush;
+	//delete this->menu->boxStyle.p_textBrush;
+	//delete this->menu;
+	//delete this->tf_Buttons;
+	//delete this->tf_Title;
 
-	this->rndData.clear();
+	//this->rndData.clear();
 }
 
 bool UIHandler::openMenu(size_t index)

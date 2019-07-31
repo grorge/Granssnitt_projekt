@@ -59,6 +59,9 @@
       <Filter>BackendLoop\GUI</Filter>
     </ClCompile>
     <ClCompile Include="MenuStructs.cpp" />
+    <ClCompile Include="ButtonFunctions.cpp">
+      <Filter>BackendLoop\GUI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="D3D.h">

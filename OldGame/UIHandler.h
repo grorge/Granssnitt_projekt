@@ -60,7 +60,7 @@ public:
 	void update();
 
 	// Loops throuth and runs any functions fropm highligthed buttons
-	void onClick();
+	void onClick(); // is locataed in Buttonfunction.cpp
 	
 };
 

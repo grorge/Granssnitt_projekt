@@ -171,6 +171,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BasicRenderState.cpp" />
+    <ClCompile Include="ButtonFunctions.cpp" />
     <ClCompile Include="DynObject.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="ControlCamera.cpp" />

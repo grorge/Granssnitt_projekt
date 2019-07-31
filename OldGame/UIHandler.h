@@ -21,11 +21,14 @@ class UIHandler
 private:
 
 	void initResources();
-	ID2D1RenderTarget* p_rndTarget = nullptr;
-	IDWriteTextFormat* p_TextFormat = nullptr;
+	ID2D1RenderTarget* p_rndTarget = nullptr; // reff
 	// D2D device for text
-	ID2D1Factory* p_Factory = nullptr;
+	ID2D1Factory* p_Factory = nullptr; // reff
 	IDWriteFactory* p_DirectWriteFactory = nullptr;
+
+	// TextFormats
+	IDWriteTextFormat* tf_Buttons = nullptr;
+	IDWriteTextFormat* tf_Title = nullptr;
 
 	// Menus
 	MenuInfo* menu;

@@ -65,6 +65,9 @@ struct MenuInfo
 {
 	DirectX::XMFLOAT2 pos = DirectX::XMFLOAT2(0.0f, 0.0f);
 
+	TextData titleText;
+	D2D1_RECT_F titleRect;
+
 	BoxGeoData boxStyle;
 	D2D1::ColorF bColor = D2D1::ColorF(D2D1::ColorF::White);
 	D2D1::ColorF tColor = D2D1::ColorF(D2D1::ColorF::White);

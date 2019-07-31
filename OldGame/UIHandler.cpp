@@ -4,7 +4,6 @@
 void UIHandler::initResources()
 {
 	static const WCHAR msc_fontName[] = L"Script"; // Verdana, Rockwell, Agency FB, Script
-	static const FLOAT msc_fontSize = 20;
 
 	DWriteCreateFactory(
 		DWRITE_FACTORY_TYPE_SHARED,
@@ -12,22 +11,37 @@ void UIHandler::initResources()
 		reinterpret_cast<IUnknown **>(&this->p_DirectWriteFactory)
 	);
 
-	// Create a DirectWrite text format object.
+	// Create Textformats
+
+	// For the buttons
 	this->p_DirectWriteFactory->CreateTextFormat(
 		msc_fontName,
 		NULL,
 		DWRITE_FONT_WEIGHT_REGULAR,
 		DWRITE_FONT_STYLE_NORMAL,
 		DWRITE_FONT_STRETCH_NORMAL,
-		msc_fontSize,
+		20, // Fontsize
 		L"en-us", //L"", //locale
-		&this->p_TextFormat
+		&this->tf_Buttons
 	);
-
 	// Center the text horizontally and vertically.
-	this->p_TextFormat->SetTextAlignment(DWRITE_TEXT_ALIGNMENT_LEADING);
+	this->tf_Buttons->SetTextAlignment(DWRITE_TEXT_ALIGNMENT_CENTER);
+	this->tf_Buttons->SetParagraphAlignment(DWRITE_PARAGRAPH_ALIGNMENT_CENTER);
 
-	this->p_TextFormat->SetParagraphAlignment(DWRITE_PARAGRAPH_ALIGNMENT_CENTER);
+	// For the Title
+	this->p_DirectWriteFactory->CreateTextFormat(
+		msc_fontName,
+		NULL,
+		DWRITE_FONT_WEIGHT_REGULAR,
+		DWRITE_FONT_STYLE_NORMAL,
+		DWRITE_FONT_STRETCH_NORMAL,
+		50, // forntsize
+		L"en-us", //L"", //locale
+		&this->tf_Title
+	);
+	// Center the text horizontally and vertically.
+	this->tf_Title->SetTextAlignment(DWRITE_TEXT_ALIGNMENT_CENTER);
+	this->tf_Title->SetParagraphAlignment(DWRITE_PARAGRAPH_ALIGNMENT_CENTER);
 }
 
 bool UIHandler::createPause()
@@ -44,7 +58,7 @@ bool UIHandler::createPause()
 	this->menu = new MenuInfo(
 		5,
 		middlePoint, sizeFloat, 5.0f,
-		D2D1::ColorF(D2D1::ColorF::GreenYellow), D2D1::ColorF(D2D1::ColorF::Black)
+		D2D1::ColorF(D2D1::ColorF::GreenYellow), D2D1::ColorF(D2D1::ColorF::Red)
 	);
 
 	// Creates the colors
@@ -74,7 +88,7 @@ bool UIHandler::createPause()
 
 		tempMenuBox.ToRender = false;
 		tempMenuBox.TxtData.wstring = L"NOTHING ASSINGED";
-		tempMenuBox.TxtData.textFormat = this->p_TextFormat;
+		tempMenuBox.TxtData.textFormat = this->tf_Buttons;
 		this->menu->v_Box.push_back(tempMenuBox);
 	}
 
@@ -83,6 +97,15 @@ bool UIHandler::createPause()
 	this->menu->setText(1, L"Options");
 	this->menu->setText(2, L"Exit");
 
+
+	//---------------------------------------------------
+
+	//Create the Title
+
+	// Set the rect to a space from the top to the start of the buttons
+	this->menu->titleRect = D2D1::RectF(this->menu->pos.x, 0, this->menu->pos.x + this->menu->boxStyle.size.x, this->menu->pos.y);
+	this->menu->titleText.textFormat = this->tf_Title;
+	this->menu->titleText.wstring = L"PAUSE";
 
 	return true;
 }
@@ -128,6 +151,12 @@ UIHandler::~UIHandler()
 
 void UIHandler::cleanUp()
 {
+	delete this->p_DirectWriteFactory;
+	delete this->menu;
+	delete this->tf_Buttons;
+	delete this->tf_Title;
+
+	this->rndData.clear();
 }
 
 bool UIHandler::openMenu(size_t index)
@@ -160,9 +189,26 @@ std::vector<UIData*> UIHandler::GETUIdata()
 void UIHandler::drawData()
 {
 	//Draw the current menu
+	bool drawMenu = false;
 	for (auto i : this->menu->v_Box)
 	{
 		if (i.ToRender)
+		{
 			i.draw(this->p_rndTarget);
+			drawMenu = true;
+		}
 	}
+
+	// Draw title
+	if (drawMenu)
+	{
+		p_rndTarget->DrawText(
+			this->menu->titleText.wstring.c_str(),
+			wcslen(this->menu->titleText.wstring.c_str()),
+			this->menu->titleText.textFormat,
+			this->menu->titleRect,
+			this->menu->boxStyle.p_textBrush
+		);
+	}
+	
 }

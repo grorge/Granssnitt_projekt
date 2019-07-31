@@ -7,6 +7,7 @@
 struct BoxGeoData {
 	ID2D1RectangleGeometry* p_rectGeom = nullptr;
 	ID2D1SolidColorBrush* p_colorBrush = nullptr;
+	ID2D1SolidColorBrush* p_highligthColorBrush = nullptr;
 	ID2D1SolidColorBrush* p_textBrush = nullptr;
 	DirectX::XMFLOAT2 pos = DirectX::XMFLOAT2(0.0f, 0.0f);
 	DirectX::XMFLOAT2 size = DirectX::XMFLOAT2(0.0f, 0.0f);
@@ -70,6 +71,7 @@ struct MenuInfo
 
 	BoxGeoData boxStyle;
 	D2D1::ColorF bColor = D2D1::ColorF(D2D1::ColorF::White);
+	D2D1::ColorF bHighColor = D2D1::ColorF(D2D1::ColorF::White);
 	D2D1::ColorF tColor = D2D1::ColorF(D2D1::ColorF::White);
 
 	int nrMenuBoxes = 0;
@@ -90,10 +92,11 @@ struct MenuInfo
 	//Nr of boxes, topLeft, Size, Padding, BackgroundColor, TextColor
 	MenuInfo(int nrOf, DirectX::XMFLOAT2 pos,
 		DirectX::XMFLOAT2 size, float padding,
-		D2D1::ColorF bColor, D2D1::ColorF tColor)
+		D2D1::ColorF bColor, D2D1::ColorF bHighColor, D2D1::ColorF tColor)
 	{
 		this->nrMenuBoxes = nrOf;
 		this->bColor = bColor;
+		this->bHighColor = bHighColor;
 		this->tColor = tColor;
 
 		this->pos = pos;

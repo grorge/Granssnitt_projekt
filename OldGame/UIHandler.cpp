@@ -58,11 +58,12 @@ bool UIHandler::createPause()
 	this->menu = new MenuInfo(
 		5,
 		middlePoint, sizeFloat, 5.0f,
-		D2D1::ColorF(D2D1::ColorF::GreenYellow), D2D1::ColorF(D2D1::ColorF::Red)
+		D2D1::ColorF(D2D1::ColorF::Green), D2D1::ColorF(D2D1::ColorF::GreenYellow), D2D1::ColorF(D2D1::ColorF::Red)
 	);
 
 	// Creates the colors
 	this->p_rndTarget->CreateSolidColorBrush(D2D1::ColorF(this->menu->bColor), &this->menu->boxStyle.p_colorBrush);
+	this->p_rndTarget->CreateSolidColorBrush(D2D1::ColorF(this->menu->bHighColor), &this->menu->boxStyle.p_highligthColorBrush);
 	this->p_rndTarget->CreateSolidColorBrush(D2D1::ColorF(this->menu->tColor), &this->menu->boxStyle.p_textBrush);
 
 

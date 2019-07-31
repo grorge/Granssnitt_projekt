@@ -91,7 +91,7 @@ struct MenuInfo
 		this->boxStyle = BoxGeoData();
 	};
 
-	//Nr of boxes, topLeft, Size, Padding, BackgroundColor, TextColor
+	//Nr of boxes, topLeft, Size, Padding, BackgroundColor, Highligth, TextColor
 	MenuInfo(int nrOf, DirectX::XMFLOAT2 pos,
 		DirectX::XMFLOAT2 size, float padding,
 		D2D1::ColorF bColor, D2D1::ColorF bHighColor, D2D1::ColorF tColor)

@@ -21,6 +21,7 @@ public:
 
 	virtual ID2D1RenderTarget* GETRenderTarget() { return this->m_pRenderTarget; }
 	virtual IDWriteTextFormat* GETTextFormat() { return this->m_pTextFormat; }
+	virtual void sendClick() { this->ui->onClick(); };
 	virtual void SETTextFormat(std::wstring input) { this->msgText = input; }
 	virtual void openMenu();
 	virtual void pauseMenu();

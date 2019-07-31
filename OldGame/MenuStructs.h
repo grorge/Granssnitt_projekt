@@ -60,7 +60,6 @@ struct MenuBox
 	TextData TxtData;
 	bool ToRender = false;
 
-
 	void draw(ID2D1RenderTarget * p_rndTarget);
 };
 

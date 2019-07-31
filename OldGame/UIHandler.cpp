@@ -169,6 +169,7 @@ bool UIHandler::openMenu(size_t index)
 		this->menu->v_Box.at(i).ToRender = true;
 	}
 	this->fillRndData();
+	this->currmenu = 0;
 	return false;
 }
 
@@ -237,9 +238,9 @@ void UIHandler::update()
 			{
 				
 				menu->v_Box.at(index).highligth = true;
-				
+				this->onButton = index;
 			}
-			else
+			else if (i.highligth)
 			{
 				menu->v_Box.at(index).highligth = false;
 			}
@@ -247,5 +248,36 @@ void UIHandler::update()
 		}
 	}
 
+	
+}
+
+void UIHandler::onClick()
+{
+	switch (this->currmenu)
+	{
+	case 0:
+		switch (this->onButton)
+		{
+		case 0: // start
+			this->menu->v_Box.at(onButton).TxtData.wstring = L"CLICKED";
+			break;
+		case 1: // Options
+			this->menu->v_Box.at(onButton).TxtData.wstring = L"CLICKED";
+			break;
+		case 2: // Exit
+			this->menu->v_Box.at(onButton).TxtData.wstring = L"CLICKED";
+			break;
+		case 3: // nan
+			this->menu->v_Box.at(onButton).TxtData.wstring = L"CLICKED";
+			break;
+		default:
+			break;
+		}
+		break;
+	case 1:
+		break;
+	default:
+		break;
+	}
 	
 }

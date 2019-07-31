@@ -31,6 +31,9 @@ EXTERN_C IMAGE_DOS_HEADER __ImageBase;
 #define HINST_THISCOMPONENT ((HINSTANCE)&__ImageBase)
 #endif
 
+//forward declaratuon
+class UIHandler;
+
 class ID2D
 {
 public:
@@ -39,6 +42,7 @@ public:
 	
 	virtual ID2D1RenderTarget* GETRenderTarget() = 0;
 	virtual IDWriteTextFormat* GETTextFormat() = 0;
+	virtual void sendClick() = 0;
 
 	// Draw content.
 	virtual HRESULT OnRender() = 0;
@@ -50,6 +54,7 @@ public:
 	virtual void closeMenu() = 0;
 	// Cleans memory
 	virtual void cleanUp() = 0;
+
 };
 
 

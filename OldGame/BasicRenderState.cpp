@@ -201,13 +201,9 @@ void BasicRenderState::handleEvents(GameManager * gm)
 		else if ( msg.message == WM_KEYUP) {
 			this->controlCamera->stopCamera(msg.wParam);
 		}
-		else if (msg.wParam == 0x01 && false) // leftklick
+		else if (msg.wParam == 0x01) // leftklick
 		{
-			POINT mPoint;
-			GetCursorPos(&mPoint);
-			// Converts it to the pixels in the window
-			ScreenToClient(Locator::getD3D()->GEThwnd(), &mPoint);
-			Locator::getD2D()->openMenu(/*XMFLOAT2(mPoint.x * (1.0f/0.8f), mPoint.y)*/);
+			Locator::getD2D()->sendClick();
 		}
 		else if (msg.wParam == 0x20) // space
 		{

@@ -31,6 +31,8 @@ private:
 	IDWriteTextFormat* tf_Title = nullptr;
 
 	// Menus
+	int onButton = 99;
+	int currmenu = 99;
 	MenuInfo* menu;
 	//std::array<MenuInfo* , 2> a_menus;
 
@@ -56,6 +58,9 @@ public:
 
 	void drawData();
 	void update();
+
+	// Loops throuth and runs any functions fropm highligthed buttons
+	void onClick();
 	
 };
 

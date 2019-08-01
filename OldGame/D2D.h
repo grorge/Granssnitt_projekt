@@ -88,6 +88,7 @@ private:
 
 
 	void initMenu();
+	void initProgbars();
 	void drawMenu();
 	void drawDebugWindow();
 

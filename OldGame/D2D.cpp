@@ -299,12 +299,18 @@ void D2D::initMenu()
 
 }
 
+void D2D::initProgbars()
+{
+	// Done in the UIhandler for now
+}
+
 void D2D::drawMenu()
 {
 	std::vector<UIData*> p_menuArr = ui->GETUIdata();
 	//for (size_t i = 0; i < this->ui->nrOf; i++)
 
 	ui->drawData();
+	ui->update();
 
 
 	//for (auto i : p_menuArr)

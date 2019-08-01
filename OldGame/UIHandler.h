@@ -29,6 +29,7 @@ private:
 	// TextFormats
 	IDWriteTextFormat* tf_Buttons = nullptr;
 	IDWriteTextFormat* tf_Title = nullptr;
+	IDWriteTextFormat* tf_Progrbar = nullptr;
 
 	// Menus
 	int onButton = 99;
@@ -36,10 +37,17 @@ private:
 	MenuInfo* menu;
 	//std::array<MenuInfo* , 2> a_menus;
 
+	//Progressbars
+	std::vector<ProgressBar*> textProgbars;
+	std::vector<ProgressBar*> numbProgbars;
+
 	std::vector<UIData*> rndData;
 
 	// Initiate Menus
 	bool createPause();
+
+	// Create Default UI
+	bool createProgBars();
 
 
 	// Updates the rndData to have the relevent geometries
@@ -50,6 +58,10 @@ public:
 	~UIHandler();
 	void cleanUp();
 
+	// Loops throuth and runs functions from highligthed buttons
+	void onClick(); // is locataed in Buttonfunction.cpp
+
+
 	bool openMenu(size_t index);
 	bool closeMenu(size_t index);
 
@@ -59,9 +71,13 @@ public:
 	void drawData();
 	void update();
 
-	// Loops throuth and runs any functions fropm highligthed buttons
-	void onClick(); // is locataed in Buttonfunction.cpp
 	
+
+	// creates and returns a progress-bar to be saved and to be altered
+	ProgressBar* makeProgbar( std::wstring startString,
+		DirectX::XMFLOAT2 pos,
+		DirectX::XMFLOAT2 size,
+		D2D1::ColorF bColor, D2D1::ColorF fColor, D2D1::ColorF tColor);
 };
 
 

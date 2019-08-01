@@ -3,6 +3,7 @@
 
 void UIHandler::initResources()
 {
+	// The main font
 	static const WCHAR msc_fontName[] = L"Script"; // Verdana, Rockwell, Agency FB, Script
 
 	DWriteCreateFactory(
@@ -42,6 +43,22 @@ void UIHandler::initResources()
 	// Center the text horizontally and vertically.
 	this->tf_Title->SetTextAlignment(DWRITE_TEXT_ALIGNMENT_CENTER);
 	this->tf_Title->SetParagraphAlignment(DWRITE_PARAGRAPH_ALIGNMENT_CENTER);
+
+
+	// For the Title
+	this->p_DirectWriteFactory->CreateTextFormat(
+		msc_fontName,
+		NULL,
+		DWRITE_FONT_WEIGHT_REGULAR,
+		DWRITE_FONT_STYLE_NORMAL,
+		DWRITE_FONT_STRETCH_NORMAL,
+		15, // forntsize
+		L"en-us", //L"", //locale
+		&this->tf_Progrbar
+	);
+	// Center the text horizontally and vertically.
+	this->tf_Progrbar->SetTextAlignment(DWRITE_TEXT_ALIGNMENT_CENTER);
+	this->tf_Progrbar->SetParagraphAlignment(DWRITE_PARAGRAPH_ALIGNMENT_CENTER);
 }
 
 bool UIHandler::createPause()
@@ -64,7 +81,7 @@ bool UIHandler::createPause()
 	// Creates the colors
 	this->p_rndTarget->CreateSolidColorBrush(D2D1::ColorF(this->menu->bColor), &this->menu->boxStyle.p_colorBrush);
 	this->p_rndTarget->CreateSolidColorBrush(D2D1::ColorF(this->menu->bHighColor), &this->menu->boxStyle.p_highligthColorBrush);
-	this->p_rndTarget->CreateSolidColorBrush(D2D1::ColorF(this->menu->tColor), &this->menu->boxStyle.p_textBrush);
+	this->p_rndTarget->CreateSolidColorBrush(D2D1::ColorF(this->menu->tColor), &this->menu->p_textBrush);
 
 
 	//---------------------------------------------------
@@ -90,6 +107,7 @@ bool UIHandler::createPause()
 		tempMenuBox.ToRender = false;
 		tempMenuBox.TxtData.wstring = L"NOTHING ASSINGED";
 		tempMenuBox.TxtData.textFormat = this->tf_Buttons;
+		tempMenuBox.TxtData.p_textBrush = this->menu->p_textBrush;
 		this->menu->v_Box.push_back(tempMenuBox);
 	}
 
@@ -106,7 +124,27 @@ bool UIHandler::createPause()
 	// Set the rect to a space from the top to the start of the buttons
 	this->menu->titleRect = D2D1::RectF(this->menu->pos.x, 0, this->menu->pos.x + this->menu->boxStyle.size.x, this->menu->pos.y);
 	this->menu->titleText.textFormat = this->tf_Title;
+	this->menu->titleText.p_textBrush = this->menu->p_textBrush;
 	this->menu->titleText.wstring = L"PAUSE";
+
+	return true;
+}
+
+bool UIHandler::createProgBars()
+{
+	DirectX::XMFLOAT2 sizeFloat(
+		DirectX::XMFLOAT2(300.0f, 50.0f)
+	);
+	DirectX::XMFLOAT2 middlePoint(
+		(Locator::getD3D()->GETwWidth() / 5.0f) - sizeFloat.x / 2.0f,
+		(Locator::getD3D()->GETwHeight() * 0.8f)
+	);
+
+	this->makeProgbar(
+		L"TEST",
+		middlePoint, sizeFloat,
+		D2D1::ColorF(D2D1::ColorF::Red), D2D1::ColorF(D2D1::ColorF::GreenYellow), D2D1::ColorF(D2D1::ColorF::Blue)
+	);
 
 	return true;
 }
@@ -144,14 +182,20 @@ UIHandler::UIHandler(ID2D1RenderTarget * p_rndTarget, ID2D1Factory * p_Factory)
 
 	this->createPause();
 
+
+	this->createProgBars();
+
 }
 
 UIHandler::~UIHandler()
 {
+	this->cleanUp();
 }
 
 void UIHandler::cleanUp()
 {
+	this->textProgbars.clear();
+	this->numbProgbars.clear();
 	//delete this->p_DirectWriteFactory;
 	//delete this->menu->boxStyle.p_colorBrush;
 	//delete this->menu->boxStyle.p_textBrush;
@@ -206,26 +250,33 @@ void UIHandler::drawData()
 	// The menu is open
 	if (drawMenu)
 	{
-		update();
 
-		//Draw menu
+		//Draw the title
 		p_rndTarget->DrawText(
 			this->menu->titleText.wstring.c_str(),
 			wcslen(this->menu->titleText.wstring.c_str()),
 			this->menu->titleText.textFormat,
 			this->menu->titleRect,
-			this->menu->boxStyle.p_textBrush
+			this->menu->p_textBrush
 		);
 	}
 	
+	for (auto bar : this->textProgbars)
+	{
+		bar->update();
+		p_Factory->CreateRectangleGeometry(
+			bar->Front.getRect(),
+			&bar->Front.p_rectGeom
+		);
+		bar->draw(this->p_rndTarget);
+	}
 }
 
 void UIHandler::update()
 {
+	// Check to see if the button is to be highligthed
 	POINT p;
-	
 	GetCursorPos(&p);
-
 	if (ScreenToClient(Locator::getD3D()->GEThwnd(), &p))
 	{
 		int index = 0;
@@ -248,5 +299,37 @@ void UIHandler::update()
 		}
 	}
 
-	
+	this->textProgbars.front()->modifBar(0.9995f);
 }
+
+
+
+ProgressBar * UIHandler::makeProgbar(std::wstring startString, DirectX::XMFLOAT2 pos, DirectX::XMFLOAT2 size, D2D1::ColorF bColor, D2D1::ColorF fColor, D2D1::ColorF tColor)
+{
+	ProgressBar* tempProg = new ProgressBar(pos, size, bColor, fColor, tColor);
+
+	// Create the colorbrushes
+	this->p_rndTarget->CreateSolidColorBrush(D2D1::ColorF(tempProg->bColor), &tempProg->Back.p_colorBrush);
+	this->p_rndTarget->CreateSolidColorBrush(D2D1::ColorF(tempProg->fColor), &tempProg->Front.p_colorBrush);
+	this->p_rndTarget->CreateSolidColorBrush(D2D1::ColorF(tempProg->tColor), &tempProg->TxtData.p_textBrush);
+
+
+	// Create the geoData
+	p_Factory->CreateRectangleGeometry(
+		tempProg->Back.getRect(),
+		&tempProg->Back.p_rectGeom
+	);
+	p_Factory->CreateRectangleGeometry(
+		tempProg->Front.getRect(),
+		&tempProg->Front.p_rectGeom
+	);
+
+	// Assign the textData
+	tempProg->TxtData.textFormat = tf_Progrbar;
+	tempProg->TxtData.wstring = startString;
+
+	// Add to internal structure and return pointer
+	this->textProgbars.push_back(tempProg);
+	return tempProg;
+}
+

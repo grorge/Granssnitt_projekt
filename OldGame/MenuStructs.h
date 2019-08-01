@@ -8,7 +8,6 @@ struct BoxGeoData {
 	ID2D1RectangleGeometry* p_rectGeom = nullptr;
 	ID2D1SolidColorBrush* p_colorBrush = nullptr;
 	ID2D1SolidColorBrush* p_highligthColorBrush = nullptr;
-	ID2D1SolidColorBrush* p_textBrush = nullptr;
 	DirectX::XMFLOAT2 pos = DirectX::XMFLOAT2(0.0f, 0.0f);
 	DirectX::XMFLOAT2 size = DirectX::XMFLOAT2(0.0f, 0.0f);
 	float padding = 0.0f;
@@ -41,26 +40,52 @@ struct BoxGeoData {
 		p_rectGeom = source->p_rectGeom;
 		p_colorBrush = source->p_colorBrush;
 		p_highligthColorBrush = source->p_highligthColorBrush;
-		p_textBrush = source->p_textBrush;
 	};
 };
 // Holds the graphical data for each box on the screen
 struct TextData {
 	std::wstring wstring;
 	IDWriteTextFormat* textFormat;
+	ID2D1SolidColorBrush* p_textBrush = nullptr;
 };
 
-// Holds the data of each Button
+// Holds the graphical data of each Button
 struct MenuBox
 {
-	DirectX::XMFLOAT2 pos = DirectX::XMFLOAT2(0.0f, 0.0f);
-
 	BoxGeoData Background;
 	bool highligth = false;
 	TextData TxtData;
 	bool ToRender = false;
 
 	void draw(ID2D1RenderTarget * p_rndTarget);
+};
+
+struct ProgressBar
+{
+	DirectX::XMFLOAT2 pos = DirectX::XMFLOAT2(0.0f, 0.0f);
+	DirectX::XMFLOAT2 size = DirectX::XMFLOAT2(0.0f, 0.0f);
+	BoxGeoData Back;
+	BoxGeoData Front;
+	float filled; //0.0 to 1.0
+
+	D2D1::ColorF bColor = D2D1::ColorF(D2D1::ColorF::White);
+	D2D1::ColorF fColor = D2D1::ColorF(D2D1::ColorF::White);
+	D2D1::ColorF tColor = D2D1::ColorF(D2D1::ColorF::White);
+	
+	TextData TxtData;
+
+
+
+	ProgressBar(DirectX::XMFLOAT2 pos,
+		DirectX::XMFLOAT2 size,
+		D2D1::ColorF bColor, D2D1::ColorF fColor, D2D1::ColorF tColor);
+
+	void setBar(float value) { this->filled = value; };
+	void modifBar(float factor) { this->filled *= factor; };
+	void decBar(float value) { this->filled -= value; };
+
+	void draw(ID2D1RenderTarget * p_rndTarget);
+	void update();
 };
 
 // Handles the menu
@@ -72,6 +97,9 @@ struct MenuInfo
 	D2D1_RECT_F titleRect;
 
 	BoxGeoData boxStyle;
+	// Holds the textBrush to be used on the menuBoxes
+	ID2D1SolidColorBrush* p_textBrush = nullptr;
+
 	D2D1::ColorF bColor = D2D1::ColorF(D2D1::ColorF::White);
 	D2D1::ColorF bHighColor = D2D1::ColorF(D2D1::ColorF::White);
 	D2D1::ColorF tColor = D2D1::ColorF(D2D1::ColorF::White);

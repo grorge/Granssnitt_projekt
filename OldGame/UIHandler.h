@@ -47,6 +47,7 @@ private:
 	bool createPause();
 
 	// Create Default UI
+	void initProgBarGraph(ProgressBar* tempProg);
 	bool createProgBars();
 
 
@@ -75,6 +76,16 @@ public:
 
 	// creates and returns a progress-bar to be saved and to be altered
 	ProgressBar* makeProgbar( std::wstring startString,
+		DirectX::XMFLOAT2 pos,
+		DirectX::XMFLOAT2 size,
+		D2D1::ColorF bColor, D2D1::ColorF fColor, D2D1::ColorF tColor);
+
+	ProgressBar* makeProgbarTimer(int startTime,
+		DirectX::XMFLOAT2 pos,
+		DirectX::XMFLOAT2 size,
+		D2D1::ColorF bColor, D2D1::ColorF fColor, D2D1::ColorF tColor);
+
+	ProgressBar* makeProgbarNumber(int maxValue,
 		DirectX::XMFLOAT2 pos,
 		DirectX::XMFLOAT2 size,
 		D2D1::ColorF bColor, D2D1::ColorF fColor, D2D1::ColorF tColor);

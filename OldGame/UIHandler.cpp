@@ -130,19 +130,52 @@ bool UIHandler::createPause()
 	return true;
 }
 
+void UIHandler::initProgBarGraph(ProgressBar * tempProg)
+{
+	// Create the colorbrushes
+	this->p_rndTarget->CreateSolidColorBrush(D2D1::ColorF(tempProg->bColor), &tempProg->Back.p_colorBrush);
+	this->p_rndTarget->CreateSolidColorBrush(D2D1::ColorF(tempProg->fColor), &tempProg->Front.p_colorBrush);
+	this->p_rndTarget->CreateSolidColorBrush(D2D1::ColorF(tempProg->tColor), &tempProg->TxtData.p_textBrush);
+
+
+	// Create the geoData
+	p_Factory->CreateRectangleGeometry(
+		tempProg->Back.getRect(),
+		&tempProg->Back.p_rectGeom
+	);
+	p_Factory->CreateRectangleGeometry(
+		tempProg->Front.getRect(),
+		&tempProg->Front.p_rectGeom
+	);
+}
+
 bool UIHandler::createProgBars()
 {
-	DirectX::XMFLOAT2 sizeFloat(
+	DirectX::XMFLOAT2 size(
 		DirectX::XMFLOAT2(300.0f, 50.0f)
 	);
-	DirectX::XMFLOAT2 middlePoint(
-		(Locator::getD3D()->GETwWidth() / 5.0f) - sizeFloat.x / 2.0f,
+	DirectX::XMFLOAT2 initPos(
+		(Locator::getD3D()->GETwWidth() / 5.0f),
 		(Locator::getD3D()->GETwHeight() * 0.8f)
 	);
 
 	this->makeProgbar(
 		L"TEST",
-		middlePoint, sizeFloat,
+		initPos, size,
+		D2D1::ColorF(D2D1::ColorF::Red), D2D1::ColorF(D2D1::ColorF::GreenYellow), D2D1::ColorF(D2D1::ColorF::Blue)
+	);
+
+	initPos.y -= 100.0f;
+	this->makeProgbarTimer(
+		100,
+		initPos, size,
+		D2D1::ColorF(D2D1::ColorF::Red), D2D1::ColorF(D2D1::ColorF::GreenYellow), D2D1::ColorF(D2D1::ColorF::Blue)
+	);
+
+	initPos.y -= 100.0f;
+	this->makeProgbarTimer(
+		300,
+		initPos, size,
 		D2D1::ColorF(D2D1::ColorF::Red), D2D1::ColorF(D2D1::ColorF::GreenYellow), D2D1::ColorF(D2D1::ColorF::Blue)
 	);
 
@@ -270,6 +303,19 @@ void UIHandler::drawData()
 		);
 		bar->draw(this->p_rndTarget);
 	}
+	for (auto bar : this->numbProgbars)
+	{
+		bar->update();
+		p_Factory->CreateRectangleGeometry(
+			bar->Front.getRect(),
+			&bar->Front.p_rectGeom
+		);
+
+		// not in update because of no subclass yet, 
+		bar->TxtData.wstring = std::to_wstring(int((bar->startNumb * bar->filled))) + L"/" + std::to_wstring(bar->startNumb);
+
+		bar->draw(this->p_rndTarget);
+	}
 }
 
 void UIHandler::update()
@@ -300,6 +346,7 @@ void UIHandler::update()
 	}
 
 	this->textProgbars.front()->modifBar(0.9995f);
+	this->numbProgbars.front()->modifBar(0.996f);
 }
 
 
@@ -308,21 +355,7 @@ ProgressBar * UIHandler::makeProgbar(std::wstring startString, DirectX::XMFLOAT2
 {
 	ProgressBar* tempProg = new ProgressBar(pos, size, bColor, fColor, tColor);
 
-	// Create the colorbrushes
-	this->p_rndTarget->CreateSolidColorBrush(D2D1::ColorF(tempProg->bColor), &tempProg->Back.p_colorBrush);
-	this->p_rndTarget->CreateSolidColorBrush(D2D1::ColorF(tempProg->fColor), &tempProg->Front.p_colorBrush);
-	this->p_rndTarget->CreateSolidColorBrush(D2D1::ColorF(tempProg->tColor), &tempProg->TxtData.p_textBrush);
-
-
-	// Create the geoData
-	p_Factory->CreateRectangleGeometry(
-		tempProg->Back.getRect(),
-		&tempProg->Back.p_rectGeom
-	);
-	p_Factory->CreateRectangleGeometry(
-		tempProg->Front.getRect(),
-		&tempProg->Front.p_rectGeom
-	);
+	this->initProgBarGraph(tempProg);
 
 	// Assign the textData
 	tempProg->TxtData.textFormat = tf_Progrbar;
@@ -330,6 +363,38 @@ ProgressBar * UIHandler::makeProgbar(std::wstring startString, DirectX::XMFLOAT2
 
 	// Add to internal structure and return pointer
 	this->textProgbars.push_back(tempProg);
+	return tempProg;
+}
+
+ProgressBar * UIHandler::makeProgbarTimer(int startTime, DirectX::XMFLOAT2 pos, DirectX::XMFLOAT2 size, D2D1::ColorF bColor, D2D1::ColorF fColor, D2D1::ColorF tColor)
+{
+	ProgressBar* tempProg = new ProgressBar(pos, size, bColor, fColor, tColor);
+
+	this->initProgBarGraph(tempProg);
+
+	// Assign the textData
+	tempProg->TxtData.textFormat = tf_Progrbar;
+	tempProg->TxtData.wstring = std::to_wstring(startTime) + L"/" + std::to_wstring(startTime);
+
+	// Add to internal structure and return pointer
+	tempProg->startNumb = startTime;
+	this->numbProgbars.push_back(tempProg);
+	return tempProg;
+}
+
+ProgressBar * UIHandler::makeProgbarNumber(int maxValue, DirectX::XMFLOAT2 pos, DirectX::XMFLOAT2 size, D2D1::ColorF bColor, D2D1::ColorF fColor, D2D1::ColorF tColor)
+{
+	ProgressBar* tempProg = new ProgressBar(pos, size, bColor, fColor, tColor);
+
+	this->initProgBarGraph(tempProg);
+
+	// Assign the textData
+	tempProg->TxtData.textFormat = tf_Progrbar;
+	tempProg->TxtData.wstring = std::to_wstring(maxValue) + L"/" + std::to_wstring(maxValue);
+
+	// Add to internal structure and return pointer
+	tempProg->startNumb = maxValue;
+	this->numbProgbars.push_back(tempProg);
 	return tempProg;
 }
 

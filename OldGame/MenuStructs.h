@@ -67,6 +67,7 @@ struct ProgressBar
 	BoxGeoData Back;
 	BoxGeoData Front;
 	float filled; //0.0 to 1.0
+	int startNumb; // Used when the bar has a dynamic number
 
 	D2D1::ColorF bColor = D2D1::ColorF(D2D1::ColorF::White);
 	D2D1::ColorF fColor = D2D1::ColorF(D2D1::ColorF::White);

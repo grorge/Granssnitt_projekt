@@ -4,9 +4,13 @@
 
 // Holds all includes
 #include "MenuStructs.h"
+#include <array>
 
 
-//#define NR_MENUS 2
+#define NR_MENUS 2
+#define MEN_OFF -1
+#define MEN_PA 0
+#define MEN_OP 1
 
 
 struct UIData
@@ -32,19 +36,23 @@ private:
 	IDWriteTextFormat* tf_Progrbar = nullptr;
 
 	// Menus
-	int onButton = 99;
-	int currmenu = 99;
-	MenuInfo* menu;
-	//std::array<MenuInfo* , 2> a_menus;
+	int onButton = MEN_OFF;
+	//MenuInfo* menu;
+	int currMenu = MEN_OFF;
+	std::array<MenuInfo* , 2> a_menus;
+	//0 pause
+	//1 options
 
 	//Progressbars
 	std::vector<ProgressBar*> textProgbars;
 	std::vector<ProgressBar*> numbProgbars;
 
-	std::vector<UIData*> rndData;
+	//std::vector<UIData*> rndData;
 
 	// Initiate Menus
+	bool createBoxes(int menuNr);
 	bool createPause();
+	bool createOptions();
 
 	// Create Default UI
 	void initProgBarGraph(ProgressBar* tempProg);
@@ -52,7 +60,7 @@ private:
 
 
 	// Updates the rndData to have the relevent geometries
-	void fillRndData();
+	//void fillRndData();
 public:
 	//UIHandler();
 	UIHandler(ID2D1RenderTarget* m_pRenderTarget = nullptr, ID2D1Factory* p_Factory = nullptr);

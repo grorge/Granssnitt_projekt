@@ -14,6 +14,9 @@ struct BoxGeoData {
 	D2D1_RECT_F rectf;
 	D2D1_RECT_F paddedRectf;
 
+	BoxGeoData() {}
+
+
 	// Calcs Rect from the parameters
 	void setRect() {
 		this->rectf = D2D1::RectF(pos.x, pos.y, pos.x + size.x, pos.y + size.y);
@@ -47,6 +50,8 @@ struct TextData {
 	std::wstring wstring;
 	IDWriteTextFormat* textFormat;
 	ID2D1SolidColorBrush* p_textBrush = nullptr;
+
+	TextData(){}
 };
 
 // Holds the graphical data of each Button

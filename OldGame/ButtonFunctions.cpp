@@ -3,28 +3,42 @@
 
 void UIHandler::onClick()
 {
-	switch (this->currmenu)
+	switch (this->currMenu)
 	{
-	case 0: // Pause menu
+	case MEN_PA: // Pause menu
 		switch (this->onButton)
 		{
 		case 0: // start
-			this->menu->v_Box.at(onButton).TxtData.wstring = L"CLICKED";
+			this->a_menus[MEN_PA]->v_Box.at(onButton).TxtData.wstring = L"CLICKED";
 			break;
 		case 1: // Options
-			this->menu->v_Box.at(onButton).TxtData.wstring = L"CLICKED";
+			this->closeMenu(MEN_PA);
+			this->openMenu(MEN_OP);
 			break;
 		case 2: // Exit
-			this->menu->v_Box.at(onButton).TxtData.wstring = L"CLICKED";
+			this->closeMenu(MEN_PA);
 			break;
-		case 3: // nan
-			this->menu->v_Box.at(onButton).TxtData.wstring = L"CLICKED";
+		case 3: // nan	  
+			this->a_menus[MEN_PA]->v_Box.at(onButton).TxtData.wstring = L"CLICKED";
 			break;
 		default:
 			break;
 		}
 		break;
-	case 1:
+	case MEN_OP: // Pause menu
+		switch (this->onButton)
+		{
+		case 0: // Windowed
+			break;
+		case 1: // Mute
+			break;
+		case 2: // Back
+			this->closeMenu(MEN_OP);
+			this->openMenu(MEN_PA);
+			break;
+		default:
+			break;
+		}
 		break;
 	default:
 		break;
